@@ -367,3 +367,101 @@ async def mapping_stations(response: Response,
     response.headers["Content-Type"] = "text/csv"
     return csv_string
 
+
+@app.post("/download", tags=["CLI"])
+async def download(filename: str) -> dict:
+
+    """
+    Downloads a file with the specified filename and returns the URL of the file moved to your S3 location.
+    """
+
+    # Checks if it is a file from GOES18 bucket
+    if (filename[:16] == 'OR_ABI-L1b-RadC-'):
+            
+        # Generate file path from filename
+        src_object_key = basic_func.path_from_filename_goes(filename)
+
+        # Checks if the provided file exists in goes bucket
+        if basic_func.check_if_file_exists_in_s3_bucket('noaa-goes18', src_object_key):
+
+            # Define path where the file has to be written
+            user_object_key = f'logs/goes18/{filename}'
+
+            # Copy file from GOES18 bucket to user bucket
+            basic_func.copy_to_public_bucket('noaa-goes18', src_object_key, user_bucket_name, user_object_key)
+
+            # Generate link from user bucket
+            aws_url = basic_func.generate_download_link_goes(user_bucket_name, user_object_key)
+
+            # Returns the generated URL
+            return {"url" : aws_url.split("?")[0]}
+        
+        else:
+            # Returns a message saying file does not exist in the bucket
+            return {"url" : "404: File not found"}
+
+    else:
+
+        # Generate file path from filename
+        src_object_key = basic_func.path_from_filename_nexrad(filename) 
+
+        # Checks if the provided file exists in nexrad bucket
+        if basic_func.check_if_file_exists_in_s3_bucket('noaa-nexrad-level2', src_object_key):
+
+            # Define path where the file has to be written
+            user_object_key = f'logs/nexrad/{filename}'
+
+            # Copy file from nexrad bucket to user bucket
+            basic_func.copy_to_public_bucket('noaa-nexrad-level2', src_object_key, user_bucket_name, user_object_key)
+
+            # Generate link from user bucket
+            aws_url = basic_func.generate_download_link_nexrad(user_bucket_name, user_object_key)
+
+            # Returns the generated URL
+            return {"url" : aws_url.split("?")[0]}
+        
+        else:
+            # Returns a message saying file does not exist in the bucket
+            return {"url" : "404: File not found"}
+            
+
+@app.post("/fetch-goes", tags=["CLI"])
+async def fetch_goes(file_prefix: str, year: str, day: str, hour: str) -> dict:
+    # if userinput.date > 31:
+    #     return 400 bad request . return incorrect date
+
+    # Lists the files present in the goes18 bucket for the selected year, day and hour
+    file_list = basic_func.list_filenames_goes(file_prefix, year, day, hour)
+
+    return {"file_list" : file_list}
+
+
+@app.post("/fetch-nexrad", tags=["CLI"])
+async def fetch_nexrad(year: str, month: str, day: str, station: str) -> dict:
+    # if userinput.date > 31:
+    #     return 400 bad request . return incorrect date
+
+    # Lists the files present in the nexrad bucket for the selected year, month, day and station
+    file_list = basic_func.list_filenames_nexrad(year, month, day, station)
+
+    return {"file_list" : file_list}
+
+
+@app.post("/add-user", tags=["CLI"])
+async def add_user(username: str, password: str, full_name: str, tier: str) -> dict:
+    # if userinput.date > 31:
+    #     return 400 bad request . return incorrect date
+
+    basic_func.add_user(username, password, full_name, tier)
+
+    return {"user" : "User added"}
+
+
+@app.post("/check-user-exists", tags=["CLI"])
+async def check_user_exists(username: str) -> dict:
+    # if userinput.date > 31:
+    #     return 400 bad request . return incorrect date
+
+    status = basic_func.check_user_exists(username)
+
+    return {"user" : status}

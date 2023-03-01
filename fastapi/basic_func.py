@@ -1,3 +1,4 @@
+import hashlib
 import json
 import re
 import sqlite3
@@ -195,6 +196,16 @@ def list_filenames_goes(year, day, hour):
     return file_list
 
 
+# Lists the files present in the goes18 bucket for the selected year, day and hour
+def list_filenames_goes(file_prefix, year, day, hour):
+    result = s3client.list_objects(Bucket='noaa-goes18', Prefix=f"{file_prefix}/{year}/{day}/{hour}/")
+    file_list = []
+    files = result.get("Contents", [])
+    for file in files:
+        file_list.append(file["Key"].split('/')[-1])
+    return file_list
+
+
 # Establishes a connection to the nexrad database
 def conn_filenames_nexrad():
     object_key = 'filenames_nexrad.db'
@@ -376,6 +387,7 @@ def validate_file_nexrad(filename):
         message="Valid file"
     return (message)
 
+
 def get_users_data():
     db = sqlite3.connect('users.db')
     cursor = db.cursor()
@@ -449,6 +461,66 @@ async def get_current_active_user(current_user: base_model.User = Depends(get_cu
         raise HTTPException(status_code=400, detail="Inactive user")
     return current_user
 
+
 # Clean up
-def conn_close(c):
-    c.close()    
+async def conn_close(c):
+    c.close()  
+
+
+async def add_user(username, password, full_name, email, tier):
+
+    # Get the absolute path to the directory containing this file
+    dirname = os.path.dirname(os.path.abspath(__file__))
+
+    # Specify the path to the database file
+    db_path = os.path.join(dirname, 'users.db')
+
+    # Establish connection to users database
+    db = sqlite3.connect(db_path)
+    cursor = db.cursor()
+
+    # Create a table to store user details
+    cursor.execute('''CREATE TABLE IF NOT EXISTS users 
+                (email TEXT PRIMARY KEY, 
+                fullname TEXT, 
+                username TEXT NOT NULL, 
+                password TEXT NOT NULL, 
+                plan TEXT NOT NULL)''')
+    
+    # Hashing the password
+    password_hash = hashlib.sha256(password.encode()).hexdigest()
+
+    # Inserting the details into users table
+    cursor.execute("INSERT INTO users (email, fullname, username, password, plan) VALUES (?, ?, ?, ?, ?)", 
+            (email, full_name, username, password_hash, tier))
+    
+    db.commit()
+
+    db.close()
+
+
+# Define function to check if user already exists in database
+def check_user_exists(username):
+
+    # Get the absolute path to the directory containing this file
+    dirname = os.path.dirname(os.path.abspath(__file__))
+
+    # Specify the path to the database file
+    db_path = os.path.join(dirname, 'users.db')
+
+    # Establish connection to users database
+    db = sqlite3.connect(db_path)
+    cursor = db.cursor()
+
+    cursor.execute("SELECT * FROM users WHERE username=?", (username,))
+    result = cursor.fetchone()
+
+    db.close()
+
+    if bool(result):
+
+        return False
+    
+    else:
+
+        return True
