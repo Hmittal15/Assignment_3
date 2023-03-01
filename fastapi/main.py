@@ -257,14 +257,6 @@ async def validate_url_goes(name:str,
     return {'url': aws_url.split("?")[0] }
 
 
-# @app.exception_handler(ValidationError)
-# async def validation_exception_handler(request: Request, exc: ValidationError):
-#     return JSONResponse(
-#         status_code=400,
-#         content={"detail": exc.errors()}
-#     )
-
-
 @app.post("/fetch-url-goes-from-name", tags=["GOES18"])
 async def fetch_url_goes_from_name(name:str,
     get_current_user: base_model.User = Depends(get_current_user)) -> dict:
@@ -369,7 +361,8 @@ async def mapping_stations(response: Response,
 
 
 @app.post("/download", tags=["CLI"])
-async def download(filename: str) -> dict:
+async def download(filename: str,
+                   get_current_user: base_model.User = Depends(get_current_user)) -> dict:
 
     """
     Downloads a file with the specified filename and returns the URL of the file moved to your S3 location.
@@ -426,7 +419,8 @@ async def download(filename: str) -> dict:
             
 
 @app.post("/fetch-goes", tags=["CLI"])
-async def fetch_goes(file_prefix: str, year: str, day: str, hour: str) -> dict:
+async def fetch_goes(file_prefix: str, year: str, day: str, hour: str,
+                     get_current_user: base_model.User = Depends(get_current_user)) -> dict:
     # if userinput.date > 31:
     #     return 400 bad request . return incorrect date
 
@@ -437,7 +431,8 @@ async def fetch_goes(file_prefix: str, year: str, day: str, hour: str) -> dict:
 
 
 @app.post("/fetch-nexrad", tags=["CLI"])
-async def fetch_nexrad(year: str, month: str, day: str, station: str) -> dict:
+async def fetch_nexrad(year: str, month: str, day: str, station: str,
+                       get_current_user: base_model.User = Depends(get_current_user)) -> dict:
     # if userinput.date > 31:
     #     return 400 bad request . return incorrect date
 
@@ -448,17 +443,19 @@ async def fetch_nexrad(year: str, month: str, day: str, station: str) -> dict:
 
 
 @app.post("/add-user", tags=["CLI"])
-async def add_user(username: str, password: str, full_name: str, tier: str) -> dict:
+async def add_user(username: str, password: str, full_name: str, plan: str,
+                   get_current_user: base_model.User = Depends(get_current_user)) -> dict:
     # if userinput.date > 31:
     #     return 400 bad request . return incorrect date
 
-    basic_func.add_user(username, password, full_name, tier)
+    basic_func.add_user(username, password, full_name, plan)
 
     return {"user" : "User added"}
 
 
 @app.post("/check-user-exists", tags=["CLI"])
-async def check_user_exists(username: str) -> dict:
+async def check_user_exists(username: str,
+                            get_current_user: base_model.User = Depends(get_current_user)) -> dict:
     # if userinput.date > 31:
     #     return 400 bad request . return incorrect date
 

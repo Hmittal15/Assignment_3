@@ -136,3 +136,4 @@ fastapi/.env
 docker_streamlit/pages/.env
 docker_streamlit/.env
 .env
+fastapi/table.py

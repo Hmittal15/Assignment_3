@@ -467,7 +467,7 @@ async def conn_close(c):
     c.close()  
 
 
-async def add_user(username, password, full_name, email, tier):
+async def add_user(username, password, full_name, plan):
 
     # Get the absolute path to the directory containing this file
     dirname = os.path.dirname(os.path.abspath(__file__))
@@ -481,18 +481,25 @@ async def add_user(username, password, full_name, email, tier):
 
     # Create a table to store user details
     cursor.execute('''CREATE TABLE IF NOT EXISTS users 
-                (email TEXT PRIMARY KEY, 
+                (username TEXT PRIMARY KEY, 
                 fullname TEXT, 
-                username TEXT NOT NULL, 
                 password TEXT NOT NULL, 
-                plan TEXT NOT NULL)''')
+                plan TEXT NOT NULL,
+                call_count INTEGER)''')
     
     # Hashing the password
     password_hash = hashlib.sha256(password.encode()).hexdigest()
 
+    if plan == 'free':
+        call_count = 10
+    elif plan == 'gold':
+        call_count = 15
+    elif plan == 'platinum':
+        call_count = 20
+
     # Inserting the details into users table
-    cursor.execute("INSERT INTO users (email, fullname, username, password, plan) VALUES (?, ?, ?, ?, ?)", 
-            (email, full_name, username, password_hash, tier))
+    cursor.execute("INSERT INTO users (username, fullname, password, plan, call_count) VALUES (?, ?, ?, ?, ?)", 
+            (username, full_name, password_hash, plan, call_count))
     
     db.commit()
 
@@ -518,9 +525,6 @@ def check_user_exists(username):
     db.close()
 
     if bool(result):
-
         return False
-    
     else:
-
         return True
