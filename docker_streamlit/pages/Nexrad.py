@@ -3,7 +3,6 @@ import streamlit as st
 import os
 from requests.exceptions import HTTPError
 import time
-from api_logging_func import check_users_api_record, update_users_api_record
 
 if 'access_token' not in st.session_state:
     st.session_state.access_token = ''
@@ -95,7 +94,11 @@ def nexrad(my_token):
         # Set up the headers for authenticated requests
         headers = {"Authorization": f"Bearer {my_token}"}
         
-        if (check_users_api_record(st.session_state.username)):
+        # Make a request to the endpoint to check if call limit has exceeded
+        username_response = (requests.post(BASE_URL + f'/check-users-api-record?username={st.session_state.username}')).json()
+        status = username_response["user"]
+
+        if (status):
 
             # Make a request to the endpoint to fetch the url for the selected file
             file_url_response = requests.post(BASE_URL + f'/fetch-url-nexrad?name={selected_file}', headers=headers).json()
@@ -112,7 +115,7 @@ def nexrad(my_token):
             
             st.write("NOAA bucket path for verfication : ", validation_url)
 
-            update_users_api_record("/fetch-url-nexrad", file_url, st.session_state.username)
+            requests.post(BASE_URL + f'/check-users-api-record?url="/fetch-url-nexrad"&response={file_url}&username={st.session_state.username}')
 
         else:
             st.text("User limit reached! Please try later.")
@@ -132,7 +135,11 @@ def nexrad(my_token):
         # Set up the headers for authenticated requests
         headers = {"Authorization": f"Bearer {my_token}"}
 
-        if (check_users_api_record(st.session_state.username)):
+        # Make a request to the endpoint to check if call limit has exceeded
+        username_response = (requests.post(BASE_URL + f'/check-users-api-record?username={st.session_state.username}')).json()
+        status = username_response["user"]
+
+        if (status):
 
             try:
                 # Copies the file from Nexrad bucket to User bucket and generates download URL
@@ -142,7 +149,7 @@ def nexrad(my_token):
                 # Display the url for the selected file
                 st.write('Download Link : ', file_url)
 
-                update_users_api_record("/fetch-url-nexrad-from-name", file_url, st.session_state.username)
+                requests.post(BASE_URL + f'/check-users-api-record?url="/fetch-url-nexrad-from-name"&response={file_url}&username={st.session_state.username}')
 
             except Exception as error:
                 st.error(f"Error: {error}")

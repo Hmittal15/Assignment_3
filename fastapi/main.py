@@ -1,3 +1,4 @@
+import io
 import os
 import sqlite3
 from fastapi import FastAPI, Response
@@ -6,14 +7,10 @@ import boto3
 import base_model
 import basic_func
 import pandas as pd
-import streamlit as st
-from passlib.context import CryptContext
 from fastapi import Depends, FastAPI, HTTPException, status
-from pydantic import BaseModel
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from jose import JWTError, jwt
-import json
-from datetime import datetime, timedelta
+from fastapi.security import OAuth2PasswordRequestForm
+from datetime import timedelta
+from fastapi.responses import StreamingResponse
 
 from basic_func import get_current_user
 
@@ -419,23 +416,42 @@ async def download(filename: str,
             return {"url" : "404: File not found"}
             
 
-# @app.post("/fetch-goes", tags=["CLI"])
-# async def fetch_goes(file_prefix: str, year: str, day: str, hour: str,
-#                      get_current_user: base_model.User = Depends(get_current_user)) -> dict:
-#     # if userinput.date > 31:
-#     #     return 400 bad request . return incorrect date
+@app.post("/fetch-goes", tags=["CLI"])
+async def fetch_goes(file_prefix: str, year: str, day: str, hour: str,
+                     get_current_user: base_model.User = Depends(get_current_user)) -> dict:
 
-#     # Lists the files present in the goes18 bucket for the selected year, day and hour
-#     file_list = basic_func.list_filenames_goes(file_prefix, year, day, hour)
+    # Validation for user input
+    if int(year) > 2023 or int(year) < 2022:
+        return {"file_list" : ['Please enter a valid year']}
+    
+    if int(day) > 366 or int(day) < 1:
+        return {"file_list" : ['Please enter a valid day']}
+    
+    if int(hour) < 0 or int(hour) > 23:
+        return {"file_list" : ['Please enter a valid station name']}
 
-#     return {"file_list" : file_list}
+    # Lists the files present in the goes18 bucket for the selected year, day and hour
+    file_list = basic_func.list_filenames_goes(file_prefix, year, day, hour)
+
+    return {"file_list" : file_list}
 
 
 @app.post("/fetch-nexrad", tags=["CLI"])
 async def fetch_nexrad(year: str, month: str, day: str, station: str,
                        get_current_user: base_model.User = Depends(get_current_user)) -> dict:
-    # if userinput.date > 31:
-    #     return 400 bad request . return incorrect date
+    
+    # Validation for user input
+    if int(year) > 2023 or int(year) < 1970:
+        return {"file_list" : ['Please enter a valid year']}
+    
+    if int(month) > 12 or int(month) < 1:
+        return {"file_list" : ['Please enter a valid month']}
+    
+    if int(day) > 31 or int(day) < 1:
+        return {"file_list" : ['Please enter a valid day']}
+    
+    if len(station) != 4:
+        return {"file_list" : ['Please enter a valid station name']}
 
     # Lists the files present in the nexrad bucket for the selected year, month, day and station
     file_list = basic_func.list_filenames_nexrad(year, month, day, station)
@@ -444,12 +460,10 @@ async def fetch_nexrad(year: str, month: str, day: str, station: str,
 
 
 @app.post("/add-user", tags=["CLI"])
-async def add_user(username: str, password: str, full_name: str, plan: str,
+async def add_user(username: str, password: str, email: str, full_name: str, plan: str,
                    get_current_user: base_model.User = Depends(get_current_user)) -> dict:
-    # if userinput.date > 31:
-    #     return 400 bad request . return incorrect date
 
-    basic_func.add_user(username, password, full_name, plan)
+    basic_func.add_user(username, password, email, full_name, plan)
 
     return {"user" : "User added"}
 
@@ -457,9 +471,82 @@ async def add_user(username: str, password: str, full_name: str, plan: str,
 @app.post("/check-user-exists", tags=["CLI"])
 async def check_user_exists(username: str,
                             get_current_user: base_model.User = Depends(get_current_user)) -> dict:
-    # if userinput.date > 31:
-    #     return 400 bad request . return incorrect date
 
     status = basic_func.check_user_exists(username)
 
     return {"user" : status}
+
+
+@app.post("/check-users-api-record", tags=["CLI"])
+async def check_users_api_record(username: str) -> dict:
+
+    print("hola"+username)
+    status = basic_func.check_users_api_record(username)
+
+    return {"user" : status}
+
+
+@app.post("/update-users-api-record", tags=["CLI"])
+async def update_users_api_record(url: str, response: str, username: str) -> dict:
+
+    status = basic_func.update_users_api_record(url, response, username)
+
+    return {"user" : status}
+
+
+@app.post("/update-password", tags=["CLI"])
+async def update_password(username: str, password: str) -> dict:
+
+    basic_func.update_password(username, password)
+
+    return {"user" : 'status'}
+
+
+@app.post("/update-plan", tags=["CLI"])
+async def update_plan(username: str, new_plan: str) -> dict:
+
+    basic_func.update_plan(username, new_plan)
+
+    return {"user" : 'status'}
+
+
+@app.post("/app-api-record", tags=["CLI"])
+async def app_api_record() -> dict:
+
+    # Connect to the SQLite database
+    conn = sqlite3.connect('app_api_record.db')
+
+    # Retrieve the data from the database
+    df = pd.read_sql_query("SELECT username, first_call FROM app_api_record", conn)
+
+    # Convert the DataFrame to a CSV string
+    csv_string = df.to_csv(index=False)
+
+    # Use io.BytesIO to create an in-memory file-like object
+    # that can be read by Streamlit
+    csv_bytes = io.BytesIO(csv_string.encode())
+
+    # Use the StreamingResponse class to send the file-like object
+    # as a streaming response
+    return StreamingResponse(csv_bytes, media_type='text/csv')
+
+
+@app.post("/user-api-record", tags=["CLI"])
+async def user_api_record() -> dict:
+
+    # Connect to the SQLite database
+    conn = sqlite3.connect('user_api_record.db')
+
+    # Retrieve the data from the database
+    df = pd.read_sql_query("SELECT username, first_call FROM user_api_record", conn)
+
+    # Convert the DataFrame to a CSV string
+    csv_string = df.to_csv(index=False)
+
+    # Use io.BytesIO to create an in-memory file-like object
+    # that can be read by Streamlit
+    csv_bytes = io.BytesIO(csv_string.encode())
+
+    # Use the StreamingResponse class to send the file-like object
+    # as a streaming response
+    return StreamingResponse(csv_bytes, media_type='text/csv')

@@ -3,7 +3,6 @@ import streamlit as st
 from requests.exceptions import HTTPError
 import time
 from pages.Login import my_token
-from api_logging_func import check_users_api_record, update_users_api_record
 
 if 'access_token' not in st.session_state:
     st.session_state.access_token = ''
@@ -71,7 +70,11 @@ def goes18(my_token):
 
     if st.button('Generate using Filter'):
 
-        if (check_users_api_record(st.session_state.username)):
+        # Make a request to the endpoint to check if call limit has exceeded
+        username_response = (requests.post(BASE_URL + f'/check-users-api-record?username={st.session_state.username}')).json()
+        status = username_response["user"]
+
+        if (status):
 
             headers = {"Authorization": f"Bearer {my_token}"}
             # Make a request to the endpoint to fetch the url for the selected file
@@ -87,7 +90,7 @@ def goes18(my_token):
             
             st.write("NOAA bucket path for verfication : ", validation_url)
 
-            update_users_api_record("/fetch-url-goes", file_url, st.session_state.username)
+            requests.post(BASE_URL + f'/check-users-api-record?url="/fetch-url-goes"&response={file_url}&username={st.session_state.username}')
 
         else:
             st.text("User limit reached! Please try later.")
@@ -106,7 +109,11 @@ def goes18(my_token):
         # Set up the headers for authenticated requests
         headers = {"Authorization": f"Bearer {my_token}"}
 
-        if (check_users_api_record(st.session_state.username)):
+        # Make a request to the endpoint to check if call limit has exceeded
+        username_response = (requests.post(BASE_URL + f'/check-users-api-record?username={st.session_state.username}')).json()
+        status = username_response["user"]
+
+        if (status):
 
             try:
                 # Copies the file from GOES18 bucket to User bucket and generates download URL
@@ -116,7 +123,7 @@ def goes18(my_token):
                 # Display the url for the selected file
                 st.write('Download Link : ', file_url)
 
-                update_users_api_record("/fetch-url-goes-from-name", file_url, st.session_state.username)
+                requests.post(BASE_URL + f'/check-users-api-record?url="/fetch-url-goes-from-name"&response={file_url}&username={st.session_state.username}')
             
             except Exception as error:
                 st.error(f"Error: {error}")

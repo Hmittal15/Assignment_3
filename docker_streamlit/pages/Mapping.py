@@ -4,7 +4,6 @@ import folium
 import requests
 import streamlit as st
 import pandas as pd
-from api_logging_func import check_users_api_record, update_users_api_record
 
 # To facilitate folium support with streamlit package
 import streamlit_folium as stf
@@ -13,12 +12,18 @@ import streamlit_folium as stf
 import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
+BASE_URL = "http://localhost:8090"
+
 if 'access_token' not in st.session_state:
     st.session_state.access_token = ''
 
 def mapping(my_token):
 
-    if (check_users_api_record(st.session_state.username)):
+    # Make a request to the endpoint to check if call limit has exceeded
+    username_response = (requests.post(BASE_URL + f'/check-users-api-record?username={st.session_state.username}')).json()
+    status = username_response["user"]
+
+    if (status):
 
         headers = {"Authorization": f"Bearer {my_token}"}
         st.header(':blue[Operational locations of NEXRAD sites]')
@@ -61,7 +66,7 @@ def mapping(my_token):
             stf.st_folium(satellite_map, width=700, height=460)
             st.text("Click on marker to view city name!")
 
-        update_users_api_record("/mapping-stations", "http", st.session_state.username)
+        requests.post(BASE_URL + f'/check-users-api-record?url="/mapping-stations"&response="http"&username={st.session_state.username}')
 
     else:
         st.text("User limit reached! Please try later.")
