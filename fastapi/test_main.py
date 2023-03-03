@@ -9,7 +9,8 @@ client = TestClient(app)
 def test_login_for_access_token():
     response = client.post(
         url = "/token",
-        json = {"username": "damg7245", "password": "spring2023"}
+        data = {"username": "damg7245", "password": "spring2023"},
+        auth=("client_id", "client_secret")
     )
     assert response.status_code == 200
 
