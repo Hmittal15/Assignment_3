@@ -90,7 +90,7 @@ def goes18(my_token):
             
             st.write("NOAA bucket path for verfication : ", validation_url)
 
-            requests.post(BASE_URL + f'/check-users-api-record?url="/fetch-url-goes"&response={file_url}&username={st.session_state.username}')
+            requests.post(BASE_URL + f'/update-users-api-record?url="/fetch-url-goes"&response={file_url}&username={st.session_state.username}')
 
         else:
             st.text("User limit reached! Please try later.")
@@ -123,7 +123,7 @@ def goes18(my_token):
                 # Display the url for the selected file
                 st.write('Download Link : ', file_url)
 
-                requests.post(BASE_URL + f'/check-users-api-record?url="/fetch-url-goes-from-name"&response={file_url}&username={st.session_state.username}')
+                requests.post(BASE_URL + f'/update-users-api-record?url="/fetch-url-goes-from-name"&response={file_url}&username={st.session_state.username}')
             
             except Exception as error:
                 st.error(f"Error: {error}")

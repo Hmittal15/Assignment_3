@@ -12,6 +12,7 @@ import base_model
 from datetime import datetime, timedelta
 from jose import JWTError, jwt
 from fastapi import Depends, HTTPException, status
+# import datetime
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
@@ -192,7 +193,7 @@ def list_filenames_goes(year, day, hour):
 
 
 # Lists the files present in the goes18 bucket for the selected year, day and hour
-def list_filenames_goes(file_prefix, year, day, hour):
+def list_filenames_goes_cli(file_prefix, year, day, hour):
     result = s3client.list_objects(Bucket='noaa-goes18', Prefix=f"{file_prefix}/{year}/{day}/{hour}/")
     file_list = []
     files = result.get("Contents", [])
@@ -464,28 +465,22 @@ async def conn_close(c):
     c.close()  
 
 
-<<<<<<< HEAD
-async def add_user(username, password, email, full_name, plan):
-    s3client.download_file('damg-test', 'users.db', os.path.join(os.path.dirname(__file__), 'users.db'))
-    db = sqlite3.connect(os.path.join(os.path.dirname(__file__), 'users.db'))
-=======
 def add_user(username, password, email, full_name, plan):
 
-    local_path = os.path.join(os.path.dirname(__file__), 'users.db')
-
-    # Establish connection to users database
-    db = sqlite3.connect(local_path)
->>>>>>> 808da5fc2669923f01ce7b19e777a194cc8c3f94
+    s3client.download_file('damg-test', 'users.db', os.path.join(os.path.dirname(__file__), 'users.db'))
+    db = sqlite3.connect(os.path.join(os.path.dirname(__file__), 'users.db'))
     cursor = db.cursor()
     
     # Hashing the password
     password_hash = pwd_context.hash(password)
 
-    if plan == 'free':
+    # call_count=0
+
+    if "free" in plan:
         call_count = 10
-    elif plan == 'gold':
+    elif "gold" in plan:
         call_count = 15
-    elif plan == 'platinum':
+    elif "platinum" in plan:
         call_count = 20
 
     # Inserting the details into users table
@@ -505,16 +500,8 @@ def add_user(username, password, email, full_name, plan):
 def check_user_exists(username):
 
     s3client.download_file('damg-test', 'users.db', os.path.join(os.path.dirname(__file__), 'users.db'))
-<<<<<<< HEAD
     db = sqlite3.connect(os.path.join(os.path.dirname(__file__), 'users.db'))
     
-=======
-
-    local_path = os.path.join(os.path.dirname(__file__), 'users.db')
-
-    # Establish connection to users database
-    db = sqlite3.connect(local_path)
->>>>>>> 808da5fc2669923f01ce7b19e777a194cc8c3f94
     cursor = db.cursor()
 
     cursor.execute("SELECT * FROM users WHERE username=?", (username,))
@@ -530,8 +517,8 @@ def check_user_exists(username):
 
 def check_users_api_record(userid: str):
 
-    s3client.download_file('damg-test', 'users_api_record.db', os.path.join(os.path.dirname(os.path.dirname(__file__)), 'users_api_record.db'))
-    s3client.download_file('damg-test', 'users.db', os.path.join(os.path.dirname(os.path.dirname(__file__)), 'users.db'))
+    s3client.download_file('damg-test', 'users_api_record.db', os.path.join(os.path.dirname(__file__), 'users_api_record.db'))
+    s3client.download_file('damg-test', 'users.db', os.path.join(os.path.dirname(__file__), 'users.db'))
 
     db1 = sqlite3.connect(os.path.join(os.path.dirname(__file__), 'users_api_record.db'))
     db3 = sqlite3.connect(os.path.join(os.path.dirname(__file__), 'users.db'))
@@ -593,25 +580,25 @@ def update_users_api_record(endpoint: str, response_status: str, userid: str):
     cursor2 = db2.cursor()
     cursor3 = db3.cursor()
     
-    now = datetime.datetime.now()
+    now = datetime.now()
     now_str = now.strftime('%Y-%m-%d %H:%M:%S')
     
     update_col = ""
-    if (endpoint=="/fetch-url-nexrad"):
+    if (("/fetch-url-nexrad" in endpoint) and ("/fetch-url-nexrad-from-name" not in endpoint)):
         update_col = "nex_filter"
-    elif (endpoint=="/fetch-url-nexrad-from-name"):
+    elif ("/fetch-url-nexrad-from-name" in endpoint):
         update_col = "nex_name"
-    elif (endpoint=="/fetch-url-goes"):
+    elif (("/fetch-url-goes" in endpoint) and ("/fetch-url-goes-from-name" not in endpoint)):
         update_col = "goes_filter"
-    elif (endpoint=="/fetch-url-goes-from-name"):
+    elif ("/fetch-url-goes-from-name" in endpoint):
         update_col = "goes_name"
-    elif (endpoint=="/mapping-stations"):
+    elif ("/mapping-stations" in endpoint):
         update_col = "nex_map"
-    elif (endpoint=="/download"):
+    elif ("/download" in endpoint):
         update_col = "download_cli"
-    elif (endpoint=="/fetch-nexrad"):
+    elif ("/fetch-nexrad" in endpoint):
         update_col = "nex_cli"
-    elif (endpoint=="/fetch-goes"):
+    elif ("/fetch-goes" in endpoint):
         update_col = "goes_cli"
     
     select_q_users = f'select plan from users where username="{userid}"'
@@ -644,7 +631,7 @@ def update_users_api_record(endpoint: str, response_status: str, userid: str):
     result = cursor1.fetchall()
     
     if result!=[]:
-        timedelta = now - datetime.datetime.strptime(result[0][1], '%Y-%m-%d %H:%M:%S')
+        timedelta = now - datetime.strptime(result[0][1], '%Y-%m-%d %H:%M:%S')
         insert_q_app_api = f'insert into app_api_record (username, first_call, plan, max_count, total_count, nex_filter, nex_name, goes_filter, goes_name, nex_map, nex_cli, goes_cli, download_cli, success, failure) values {result[0]}'
     
     if result==[]:
@@ -705,7 +692,14 @@ def update_plan(username, new_plan):
     db = sqlite3.connect(os.path.join(os.path.dirname(__file__), 'users.db'))
     c = db.cursor()
 
-    c.execute("UPDATE users SET plan=? WHERE username=?", (new_plan, username))
+    if "free" in new_plan:
+        call_count = 10
+    elif "gold" in new_plan:
+        call_count = 15
+    elif "platinum" in new_plan:
+        call_count = 20
+
+    c.execute("UPDATE users SET plan=?, call_count=? WHERE username=?", (new_plan, call_count, username))
 
     db.commit()
 
