@@ -3,6 +3,7 @@ import streamlit as st
 from requests.exceptions import HTTPError
 import time
 from pages.Login import my_token
+from api_logging_func import check_users_api_record, update_users_api_record
 
 if 'access_token' not in st.session_state:
     st.session_state.access_token = ''
@@ -70,19 +71,26 @@ def goes18(my_token):
 
     if st.button('Generate using Filter'):
 
-        headers = {"Authorization": f"Bearer {my_token}"}
-        # Make a request to the endpoint to fetch the url for the selected file
-        file_url_response = requests.post(BASE_URL + f'/fetch-url-goes?name={selected_file}', headers=headers).json()
-        file_url = file_url_response["url"]
+        if (check_users_api_record(st.session_state.username)):
 
-        # Display the url for the selected file
-        st.write('Download Link : ', file_url)
+            headers = {"Authorization": f"Bearer {my_token}"}
+            # Make a request to the endpoint to fetch the url for the selected file
+            file_url_response = requests.post(BASE_URL + f'/fetch-url-goes?name={selected_file}', headers=headers).json()
+            file_url = file_url_response["url"]
 
-        # Make a request to the endpoint to fetch the url for the selected file from the GOES18 bucket for validation
-        validation_url_response = requests.post(BASE_URL + f'/validate-url-goes?name={selected_file}', headers=headers).json()
-        validation_url = validation_url_response["url"]
-        
-        st.write("NOAA bucket path for verfication : ", validation_url)
+            # Display the url for the selected file
+            st.write('Download Link : ', file_url)
+
+            # Make a request to the endpoint to fetch the url for the selected file from the GOES18 bucket for validation
+            validation_url_response = requests.post(BASE_URL + f'/validate-url-goes?name={selected_file}', headers=headers).json()
+            validation_url = validation_url_response["url"]
+            
+            st.write("NOAA bucket path for verfication : ", validation_url)
+
+            update_users_api_record("/fetch-url-goes", file_url, st.session_state.username)
+
+        else:
+            st.text("User limit reached! Please try later.")
 
     st.header("")
     st.header("Search by Filename")
@@ -98,17 +106,24 @@ def goes18(my_token):
         # Set up the headers for authenticated requests
         headers = {"Authorization": f"Bearer {my_token}"}
 
-        try:
-            # Copies the file from GOES18 bucket to User bucket and generates download URL
-            file_url_response = requests.post(BASE_URL + f'/fetch-url-goes-from-name?name={filename}', headers=headers).json()
-            file_url = file_url_response["url"]    
+        if (check_users_api_record(st.session_state.username)):
 
-            # Display the url for the selected file
-            st.write('Download Link : ', file_url)
-        
-        except Exception as error:
-            st.error(f"Error: {error}")
-    
+            try:
+                # Copies the file from GOES18 bucket to User bucket and generates download URL
+                file_url_response = requests.post(BASE_URL + f'/fetch-url-goes-from-name?name={filename}', headers=headers).json()
+                file_url = file_url_response["url"]    
+
+                # Display the url for the selected file
+                st.write('Download Link : ', file_url)
+
+                update_users_api_record("/fetch-url-goes-from-name", file_url, st.session_state.username)
+            
+            except Exception as error:
+                st.error(f"Error: {error}")
+
+        else:
+            st.text("User limit reached! Please try later.")
+
 if "access_token" not in st.session_state or st.session_state['access_token']=='':
     st.title("Please sign-in to access this feature!")
 else:

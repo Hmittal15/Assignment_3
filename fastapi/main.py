@@ -214,7 +214,7 @@ async def list_hours_goes(year:str, day:str,
 
 
 @app.post("/list-files-goes", tags=["GOES18"])
-async def fetch_url_goes(year:str, day:str, hour:str,
+async def list_files_goes(year:str, day:str, hour:str,
     get_current_user: base_model.User = Depends(get_current_user)) -> dict:
 
     # Lists the files present in the goes18 bucket for the selected year, day and hour
@@ -344,6 +344,7 @@ async def fetch_url_nexrad_from_name(name:str,
 @app.get("/mapping-stations", tags=["Nexrad"], response_class=Response)
 async def mapping_stations(response: Response,
     get_current_user: base_model.User = Depends(get_current_user)) -> str:
+
     # Retrieve data from database
     db = sqlite3.connect('location.db')
     cursor = db.cursor()
@@ -418,16 +419,16 @@ async def download(filename: str,
             return {"url" : "404: File not found"}
             
 
-@app.post("/fetch-goes", tags=["CLI"])
-async def fetch_goes(file_prefix: str, year: str, day: str, hour: str,
-                     get_current_user: base_model.User = Depends(get_current_user)) -> dict:
-    # if userinput.date > 31:
-    #     return 400 bad request . return incorrect date
+# @app.post("/fetch-goes", tags=["CLI"])
+# async def fetch_goes(file_prefix: str, year: str, day: str, hour: str,
+#                      get_current_user: base_model.User = Depends(get_current_user)) -> dict:
+#     # if userinput.date > 31:
+#     #     return 400 bad request . return incorrect date
 
-    # Lists the files present in the goes18 bucket for the selected year, day and hour
-    file_list = basic_func.list_filenames_goes(file_prefix, year, day, hour)
+#     # Lists the files present in the goes18 bucket for the selected year, day and hour
+#     file_list = basic_func.list_filenames_goes(file_prefix, year, day, hour)
 
-    return {"file_list" : file_list}
+#     return {"file_list" : file_list}
 
 
 @app.post("/fetch-nexrad", tags=["CLI"])
