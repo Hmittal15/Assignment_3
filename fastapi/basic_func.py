@@ -552,7 +552,12 @@ def check_users_api_record(userid: str):
         cursor11.execute(update_q_user_total_count)
         cursor111.execute(select_q)
         updated_result = cursor111.fetchall()
-        if (updated_result[0][4] >= updated_result[0][3]):
+
+        now = datetime.now()
+        now_str = now.strftime('%Y-%m-%d %H:%M:%S')
+        timedelta = now - datetime.strptime(result[0][1], '%Y-%m-%d %H:%M:%S')
+
+        if ((updated_result[0][4] >= updated_result[0][3]) and (timedelta.total_seconds() < 60 * 60)):
             return False
     
     db1.commit()

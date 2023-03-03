@@ -38,4 +38,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    st.text(st.session_state["access_token"])
