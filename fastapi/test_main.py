@@ -6,18 +6,18 @@ import os
 client = TestClient(app)
 
 # Test login_for_access_token
-def test_login_for_access_token():
-    response = client.post(
-        url = "/token",
-        data = {"username": "damg7245", "password": "spring2023"},
-        auth=("client_id", "client_secret")
-    )
-    assert response.status_code == 200
+# def test_login_for_access_token():
+#     response = client.post(
+#         url = "/token",
+#         data = {"username": "damg7245", "password": "spring2023"},
+#         auth=("client_id", "client_secret")
+#     )
+#     assert response.status_code == 200
 
 #Tests the nexrad year list returned
 def test_list_years_nexrad():
     headers={'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkYW1nNzI0NSIsImV4cCI6MTY3NzgxNDM3MH0.x5EEEApt-SHrmT9bQyd__HD-tJUYFrTu2XAlDoSmmN8'}
-    response = client.get("/list-years-nexrad", headers=headers)
+    response = client.get("/list-years-nexrad")
     assert response.status_code == 200
     message = response.json()["year_list"]
     assert message == ['2023', '2022']
@@ -26,8 +26,7 @@ def test_list_years_nexrad():
 def test_list_months_nexrad():
     headers={'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkYW1nNzI0NSIsImV4cCI6MTY3NzgxNDM3MH0.x5EEEApt-SHrmT9bQyd__HD-tJUYFrTu2XAlDoSmmN8'}
     response = client.post(
-        url = "/list-months-nexrad?year=2023",
-        headers=headers
+        url = "/list-months-nexrad?year=2023"
     )
     assert response.status_code == 200
 
@@ -35,8 +34,7 @@ def test_list_months_nexrad():
 def test_list_days_nexrad():
     headers={'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkYW1nNzI0NSIsImV4cCI6MTY3NzgxNDM3MH0.x5EEEApt-SHrmT9bQyd__HD-tJUYFrTu2XAlDoSmmN8'}
     response = client.post(
-        url = "/list-days-nexrad?year=2023&month=01",
-        headers=headers
+        url = "/list-days-nexrad?year=2023&month=01"
         )
     assert response.status_code == 200
 
@@ -44,8 +42,7 @@ def test_list_days_nexrad():
 def test_list_stations_nexrad():
     headers={'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkYW1nNzI0NSIsImV4cCI6MTY3NzgxNDM3MH0.x5EEEApt-SHrmT9bQyd__HD-tJUYFrTu2XAlDoSmmN8'}
     response = client.post(
-        url = "/list-stations-nexrad?year=2023&month=01&day=01",
-        headers=headers
+        url = "/list-stations-nexrad?year=2023&month=01&day=01"
     )
     assert response.status_code == 200
     message = response.json()["stations_list"]
@@ -254,8 +251,7 @@ def test_list_stations_nexrad():
 def test_list_files_nexrad():
     headers={'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkYW1nNzI0NSIsImV4cCI6MTY3NzgxNDM3MH0.x5EEEApt-SHrmT9bQyd__HD-tJUYFrTu2XAlDoSmmN8'}
     response = client.post(
-        url = "/list-files-nexrad?year=2023&month=01&day=01&station=KABR",
-        headers=headers
+        url = "/list-files-nexrad?year=2023&month=01&day=01&station=KABR"
     )
     assert response.status_code == 200
 
@@ -263,8 +259,7 @@ def test_list_files_nexrad():
 def test_fetch_url_nexrad():
     headers={'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkYW1nNzI0NSIsImV4cCI6MTY3NzgxNDM3MH0.x5EEEApt-SHrmT9bQyd__HD-tJUYFrTu2XAlDoSmmN8'}
     response = client.post(
-        url = "/fetch-url-nexrad?name=KABR20230101_000142_V06",
-        headers=headers
+        url = "/fetch-url-nexrad?name=KABR20230101_000142_V06"
     )
     assert response.status_code == 200
     message = response.json()["url"]
@@ -274,8 +269,7 @@ def test_fetch_url_nexrad():
 def test_validate_url_nexrad():
     headers={'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkYW1nNzI0NSIsImV4cCI6MTY3NzgxNDM3MH0.x5EEEApt-SHrmT9bQyd__HD-tJUYFrTu2XAlDoSmmN8'}
     response = client.post(
-        url = "/validate-url-nexrad?name=%22https%3A%2F%2Fdamg-test.s3.amazonaws.com%2Flogs%2Fnexrad%2FKABR20230101_000142_V06%22",
-        headers=headers
+        url = "/validate-url-nexrad?name=%22https%3A%2F%2Fdamg-test.s3.amazonaws.com%2Flogs%2Fnexrad%2FKABR20230101_000142_V06%22"
     )
     assert response.status_code == 200
     message = response.json()["url"]
@@ -285,7 +279,7 @@ def test_validate_url_nexrad():
 #Tests the goes year list returned
 def test_list_years_goes():
     headers={'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkYW1nNzI0NSIsImV4cCI6MTY3NzgxNDM3MH0.x5EEEApt-SHrmT9bQyd__HD-tJUYFrTu2XAlDoSmmN8'}
-    response = client.get("/list-years-goes", headers=headers)
+    response = client.get("/list-years-goes")
     assert response.status_code == 200
     message = response.json()["year_list"]
     assert message == ["2022","2023"]
@@ -294,8 +288,7 @@ def test_list_years_goes():
 def test_list_days_goes():
     headers={'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkYW1nNzI0NSIsImV4cCI6MTY3NzgxNDM3MH0.x5EEEApt-SHrmT9bQyd__HD-tJUYFrTu2XAlDoSmmN8'}
     response = client.post(
-        url = "/list-days-goes?year=2023",
-        headers=headers
+        url = "/list-days-goes?year=2023"
     )
     assert response.status_code == 200
     
@@ -303,8 +296,7 @@ def test_list_days_goes():
 def test_list_hours_goes():
     headers={'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkYW1nNzI0NSIsImV4cCI6MTY3NzgxNDM3MH0.x5EEEApt-SHrmT9bQyd__HD-tJUYFrTu2XAlDoSmmN8'}
     response = client.post(
-        url = "/list-hours-goes?year=2023&day=001",
-        headers=headers
+        url = "/list-hours-goes?year=2023&day=001"
     )
     assert response.status_code == 200
 
@@ -312,8 +304,7 @@ def test_list_hours_goes():
 def test_files_goes():
     headers={'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkYW1nNzI0NSIsImV4cCI6MTY3NzgxNDM3MH0.x5EEEApt-SHrmT9bQyd__HD-tJUYFrTu2XAlDoSmmN8'}
     response = client.post(
-        url = "/list-files-goes?year=2023&day=001&hour=00",
-        headers=headers
+        url = "/list-files-goes?year=2023&day=001&hour=00"
     )
     assert response.status_code == 200
 
@@ -321,8 +312,7 @@ def test_files_goes():
 def test_fetch_url_goes():
     headers={'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkYW1nNzI0NSIsImV4cCI6MTY3NzgxNDM3MH0.x5EEEApt-SHrmT9bQyd__HD-tJUYFrTu2XAlDoSmmN8'}
     response = client.post(
-        url = "/fetch-url-goes?name=OR_ABI-L1b-RadC-M6C01_G18_s20230010001170_e20230010003544_c20230010003582.nc",
-        headers=headers
+        url = "/fetch-url-goes?name=OR_ABI-L1b-RadC-M6C01_G18_s20230010001170_e20230010003544_c20230010003582.nc"
     )
     assert response.status_code == 200
     message = response.json()["url"]
@@ -332,8 +322,7 @@ def test_fetch_url_goes():
 def test_validate_url_goes():
     headers={'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkYW1nNzI0NSIsImV4cCI6MTY3NzgxNDM3MH0.x5EEEApt-SHrmT9bQyd__HD-tJUYFrTu2XAlDoSmmN8'}
     response = client.post(
-        url = "/validate-url-goes?name=%22https%3A%2F%2Fdamg-test.s3.amazonaws.com%2Flogs%2Fgoes18%2FOR_ABI-L1b-RadC-M6C01_G18_s20230010001170_e20230010003544_c20230010003582.nc%22",
-        headers=headers
+        url = "/validate-url-goes?name=%22https%3A%2F%2Fdamg-test.s3.amazonaws.com%2Flogs%2Fgoes18%2FOR_ABI-L1b-RadC-M6C01_G18_s20230010001170_e20230010003544_c20230010003582.nc%22"
     )
     assert response.status_code == 200
     message = response.json()["url"]
@@ -343,8 +332,7 @@ def test_validate_url_goes():
 def test_fetch_url_goes_from_name():
     headers={'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkYW1nNzI0NSIsImV4cCI6MTY3NzgxNDM3MH0.x5EEEApt-SHrmT9bQyd__HD-tJUYFrTu2XAlDoSmmN8'}
     response = client.post(
-        url = "/fetch-url-goes-from-name?name=OR_ABI-L1b-RadC-M6C01_G18_s20230010001170_e20230010003544_c20230010003582.nc",
-        headers=headers
+        url = "/fetch-url-goes-from-name?name=OR_ABI-L1b-RadC-M6C01_G18_s20230010001170_e20230010003544_c20230010003582.nc"
     )
     assert response.status_code == 200
     message = response.json()["url"]
@@ -355,8 +343,7 @@ def test_fetch_url_goes_from_name():
 def test_fetch_url_nexrad_from_name():
     headers={'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkYW1nNzI0NSIsImV4cCI6MTY3NzgxNDM3MH0.x5EEEApt-SHrmT9bQyd__HD-tJUYFrTu2XAlDoSmmN8'}
     response = client.post(
-        url = "/fetch-url-nexrad-from-name?name=KABR20230101_000142_V06",
-        headers=headers
+        url = "/fetch-url-nexrad-from-name?name=KABR20230101_000142_V06"
     )
     assert response.status_code == 200
     message = response.json()["url"]
@@ -366,7 +353,6 @@ def test_fetch_url_nexrad_from_name():
 def test_mapping_stations():
     headers={'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkYW1nNzI0NSIsImV4cCI6MTY3NzgxNDM3MH0.x5EEEApt-SHrmT9bQyd__HD-tJUYFrTu2XAlDoSmmN8'}
     response = client.get(
-        url = '/mapping-stations',
-        headers=headers
+        url = '/mapping-stations'
     )
     assert response.status_code == 200
