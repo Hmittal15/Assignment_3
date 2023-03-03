@@ -31,7 +31,6 @@ nexrad_bucket = 'noaa-nexrad-level2'
 @app.post("/token", status_code=200, tags=["Authenticate"])
 async def login_for_access_token(request: OAuth2PasswordRequestForm = Depends()):
     all_data=basic_func.get_users_data()
-    my_dict={}
     for i in range(len(all_data)):
         if (all_data[i]['username']==request.username):
             my_dict=all_data[i]
@@ -432,7 +431,7 @@ async def fetch_goes(file_prefix: str, year: str, day: str, hour: str,
         return {"file_list" : ['Please enter a valid station name']}
 
     # Lists the files present in the goes18 bucket for the selected year, day and hour
-    file_list = basic_func.list_filenames_goes_cli(file_prefix, year, day, hour)
+    file_list = basic_func.list_filenames_goes(file_prefix, year, day, hour)
 
     return {"file_list" : file_list}
 
@@ -479,6 +478,7 @@ async def check_user_exists(username: str) -> dict:
 @app.post("/check-users-api-record", tags=["CLI"])
 async def check_users_api_record(username: str) -> dict:
 
+    print("hola"+username)
     status = basic_func.check_users_api_record(username)
 
     return {"user" : status}
@@ -509,16 +509,34 @@ def update_plan(username: str, new_plan: str) -> dict:
 
 
 @app.post("/app-api-record", tags=["CLI"])
-def app_api_record() -> dict:
+def app_api_record():
 
+    bucket_name = "damg-test"
+    file_name = 'app_api_record.db'
+   
+
+    s3client.download_file(bucket_name, file_name, file_name)
+    # s3client.download_file(bucket_name, file_name_2, file_name_2)
+
+    conn = sqlite3.connect(file_name)
+    app_api_df = pd.read_sql_query("SELECT * FROM app_api_record", conn)
+
+    # Close database connection and delete local file
+    conn.close()
+
+
+
+
+
+    
     # Connect to the SQLite database
-    conn = sqlite3.connect('app_api_record.db')
+    # conn = sqlite3.connect('app_api_record.db')
 
     # Retrieve the data from the database
-    df = pd.read_sql_query("SELECT username, first_call FROM app_api_record", conn)
-
+    # df = pd.read_sql_query("SELECT username, first_call FROM app_api_record", conn)
+    # df.head()
     # Convert the DataFrame to a CSV string
-    csv_string = df.to_csv(index=False)
+    csv_string = app_api_df.to_csv(index=False)
 
     # Use io.BytesIO to create an in-memory file-like object
     # that can be read by Streamlit
@@ -526,20 +544,36 @@ def app_api_record() -> dict:
 
     # Use the StreamingResponse class to send the file-like object
     # as a streaming response
+    
     return StreamingResponse(csv_bytes, media_type='text/csv')
 
 
 @app.post("/user-api-record", tags=["CLI"])
 async def user_api_record() -> dict:
 
+
+    bucket_name = "damg-test"
+    file_name = 'users_api_record.db'
+   
+
+    s3client.download_file(bucket_name, file_name, file_name)
+    # s3client.download_file(bucket_name, file_name_2, file_name_2)
+
+    conn = sqlite3.connect(file_name)
+    users_api_df = pd.read_sql_query("SELECT * FROM users_api_record", conn)
+
+    # Close database connection and delete local file
+    conn.close()
+
+
     # Connect to the SQLite database
-    conn = sqlite3.connect('user_api_record.db')
+    # conn = sqlite3.connect('user_api_record.db')
 
     # Retrieve the data from the database
-    df = pd.read_sql_query("SELECT username, first_call FROM user_api_record", conn)
+    # df = pd.read_sql_query("SELECT username, first_call FROM user_api_record", conn)
 
     # Convert the DataFrame to a CSV string
-    csv_string = df.to_csv(index=False)
+    csv_string = users_api_df.to_csv(index=False)
 
     # Use io.BytesIO to create an in-memory file-like object
     # that can be read by Streamlit
