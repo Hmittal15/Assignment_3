@@ -7,7 +7,6 @@ on:
 
 jobs:
   build:
-    needs: push_data_docs_to_s3
     runs-on: ubuntu-latest
     steps:
       - 
@@ -34,18 +33,3 @@ jobs:
         run: |
           pipenv install -r requirements.txt
           pipenv run pytest -v
-        
-
-        
-      -   
-        name: Install AWS CLI
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y awscli
-      - 
-        name: Push data docs to S3 and enable static website hosting
-        run: |
-          aws s3 sync great_expectations_new/great_expectations/uncommitted/data_docs/local_site s3://damg-test --delete
-          aws s3 website s3://damg-test --index-document index.html
-        
-
