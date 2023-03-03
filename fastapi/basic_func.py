@@ -108,15 +108,15 @@ def generate_download_link_nexrad(bucket_name, object_key, expiration=3600):
         },
         ExpiresIn=expiration
     )
-    # write_logs_nexrad(f"{[object_key.rsplit('/', 1)[-1],response]}")
+    write_logs_nexrad(f"{[object_key.rsplit('/', 1)[-1],response]}")
     return response
 
 
 #Generating logs with given message in cloudwatch
 def write_logs_goes(message : str):
     clientlogs.put_log_events(
-    logGroupName = "assignment2-logs",
-    logStreamName = "goes-logs",
+    logGroupName = "assignment_3_logs",
+    logStreamName = "goes_logs",
     logEvents = [
         {
             'timestamp' : int(time.time() * 1e3),
@@ -129,8 +129,8 @@ def write_logs_goes(message : str):
 #Generating logs with given message in cloudwatch
 def write_logs_nexrad(message : str):
     clientlogs.put_log_events(
-    logGroupName = "assignment2-logs",
-    logStreamName = "nexrad-logs",
+    logGroupName = "assignment_3_logs",
+    logStreamName = "nexrad_logs",
     logEvents = [
         {
             'timestamp' : int(time.time() * 1e3),
