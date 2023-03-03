@@ -389,7 +389,9 @@ def validate_file_nexrad(filename):
 
 
 def get_users_data():
-    db = sqlite3.connect('users.db')
+    s3client.download_file('damg-test', 'users.db', os.path.join(os.path.dirname(__file__), 'users.db'))
+    db = sqlite3.connect(os.path.join(os.path.dirname(__file__), 'users.db'))
+
     cursor = db.cursor()
     cursor.execute('''select * from users''')
 
