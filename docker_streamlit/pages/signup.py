@@ -32,14 +32,8 @@ if st.button('Sign up'):
         requests.post(BASE_URL + f'/add-user?username={username}&password={password}&email={email}&full_name={fullname}&plan={plan}')
 
         st.success(f"User : {username} created successfully with Name : {fullname} and Subscription Plan : {plan}.")
-  
 
     else:
-        # Code to create user goes here
-        requests.post(BASE_URL + f'/add-user?username={username}&password={password}&email={email}&full_name={fullname}&plan={plan}')
-
-        st.success(f"User : {username} created successfully with Name : {fullname} and Subscription Plan : {plan}.")
-  
         st.write("Username already exists.")
         # raise typer.Abort()
 

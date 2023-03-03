@@ -466,8 +466,6 @@ async def conn_close(c):
 
 def add_user(username, password, email, full_name, plan):
 
-    s3client.download_file('damg-test', 'users.db', os.path.join(os.path.dirname(__file__), 'users.db'))
-
     local_path = os.path.join(os.path.dirname(__file__), 'users.db')
 
     # Establish connection to users database
@@ -500,14 +498,12 @@ def add_user(username, password, email, full_name, plan):
 # Define function to check if user already exists in database
 def check_user_exists(username):
 
-    # Get the absolute path to the directory containing this file
-    dirname = os.path.dirname(os.path.abspath(__file__))
+    s3client.download_file('damg-test', 'users.db', os.path.join(os.path.dirname(__file__), 'users.db'))
 
-    # Specify the path to the database file
-    db_path = os.path.join(dirname, 'users.db')
+    local_path = os.path.join(os.path.dirname(__file__), 'users.db')
 
     # Establish connection to users database
-    db = sqlite3.connect(db_path)
+    db = sqlite3.connect(local_path)
     cursor = db.cursor()
 
     cursor.execute("SELECT * FROM users WHERE username=?", (username,))
