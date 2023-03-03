@@ -1,11 +1,24 @@
 import sqlite3
 import datetime
+import boto3
+import os
 
+#Establish connection to client
+s3client = boto3.client('s3', 
+                        region_name = 'us-east-1',
+                        aws_access_key_id = "AKIAU27WT3VNNLWMTSGP",
+                        aws_secret_access_key = "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"
+                        )
 
 def update_users_api_record(endpoint: str, response_status: str, userid: str):
-    db1 = sqlite3.connect('users_api_record.db')
-    db2 = sqlite3.connect('app_api_record.db')
-    db3 = sqlite3.connect('users.db')
+
+    s3client.download_file('damg-test', 'users_api_record.db', os.path.join(os.path.dirname(os.path.dirname(__file__)), 'users_api_record.db'))
+    s3client.download_file('damg-test', 'app_api_record.db', os.path.join(os.path.dirname(os.path.dirname(__file__)), 'app_api_record.db'))
+    s3client.download_file('damg-test', 'users.db', os.path.join(os.path.dirname(os.path.dirname(__file__)), 'users.db'))
+
+    db1 = sqlite3.connect(os.path.join(os.path.dirname(os.path.dirname(__file__)), 'users_api_record.db'))
+    db2 = sqlite3.connect(os.path.join(os.path.dirname(os.path.dirname(__file__)), 'app_api_record.db'))
+    db3 = sqlite3.connect(os.path.join(os.path.dirname(os.path.dirname(__file__)), 'users.db'))
     
     cursor1 = db1.cursor()
     cursor2 = db2.cursor()
@@ -88,11 +101,20 @@ def update_users_api_record(endpoint: str, response_status: str, userid: str):
     db2.commit()
     db2.close()
     db3.close()
+
+    s3client.upload_file(os.path.join(os.path.dirname(os.path.dirname(__file__)), 'users_api_record.db'), 'damg-test', 'users_api_record.db')
+    s3client.upload_file(os.path.join(os.path.dirname(os.path.dirname(__file__)), 'app_api_record.db'), 'damg-test', 'app_api_record.db')
+    s3client.upload_file(os.path.join(os.path.dirname(os.path.dirname(__file__)), 'users.db'), 'damg-test', 'users.db')
+
     return True
 
 def check_users_api_record(userid: str):
-    db1 = sqlite3.connect('users_api_record.db')
-    db3 = sqlite3.connect('users.db')
+
+    s3client.download_file('damg-test', 'users_api_record.db', os.path.join(os.path.dirname(os.path.dirname(__file__)), 'users_api_record.db'))
+    s3client.download_file('damg-test', 'users.db', os.path.join(os.path.dirname(os.path.dirname(__file__)), 'users.db'))
+
+    db1 = sqlite3.connect(os.path.join(os.path.dirname(os.path.dirname(__file__)), 'users_api_record.db'))
+    db3 = sqlite3.connect(os.path.join(os.path.dirname(os.path.dirname(__file__)), 'users.db'))
     
     cursor1 = db1.cursor()
     cursor11 = db1.cursor()
@@ -130,4 +152,8 @@ def check_users_api_record(userid: str):
     db1.commit()
     db1.close()
     db3.close()
+
+    s3client.upload_file(os.path.join(os.path.dirname(os.path.dirname(__file__)), 'users_api_record.db'), 'damg-test', 'users_api_record.db')
+    s3client.upload_file(os.path.join(os.path.dirname(os.path.dirname(__file__)), 'users.db'), 'damg-test', 'users.db')
+
     return True
