@@ -29,7 +29,7 @@ with tab1:
             else:
 
                 # Call function to update password in database
-                requests.post(BASE_URL + f'/update-passwordr?username={username}&password={password}')
+                requests.post(BASE_URL + f'/update-password?username={username}&password={password}')
                 st.success("Password updated successfully!")
         else:
             st.error("Please enter both username and new password")

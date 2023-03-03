@@ -465,15 +465,8 @@ async def conn_close(c):
 
 
 async def add_user(username, password, email, full_name, plan):
-
-    # Get the absolute path to the directory containing this file
-    dirname = os.path.dirname(os.path.abspath(__file__))
-
-    # Specify the path to the database file
-    db_path = os.path.join(dirname, 'users.db')
-
-    # Establish connection to users database
-    db = sqlite3.connect(db_path)
+    s3client.download_file('damg-test', 'users.db', os.path.join(os.path.dirname(__file__), 'users.db'))
+    db = sqlite3.connect(os.path.join(os.path.dirname(__file__), 'users.db'))
     cursor = db.cursor()
 
     # Create a table to store user details
@@ -506,14 +499,9 @@ async def add_user(username, password, email, full_name, plan):
 # Define function to check if user already exists in database
 def check_user_exists(username):
 
-    # Get the absolute path to the directory containing this file
-    dirname = os.path.dirname(os.path.abspath(__file__))
-
-    # Specify the path to the database file
-    db_path = os.path.join(dirname, 'users.db')
-
-    # Establish connection to users database
-    db = sqlite3.connect(db_path)
+    s3client.download_file('damg-test', 'users.db', os.path.join(os.path.dirname(__file__), 'users.db'))
+    db = sqlite3.connect(os.path.join(os.path.dirname(__file__), 'users.db'))
+    
     cursor = db.cursor()
 
     cursor.execute("SELECT * FROM users WHERE username=?", (username,))
@@ -683,26 +671,31 @@ def update_password(username, password):
     # Hashing the password
     password_hash = hashlib.sha256(password.encode()).hexdigest()
 
-    # Connect to database
-    conn = sqlite3.connect('users.db')
-    c = conn.cursor()
+    s3client.download_file('damg-test', 'users.db', os.path.join(os.path.dirname(__file__), 'users.db'))
+    db = sqlite3.connect(os.path.join(os.path.dirname(__file__), 'users.db'))
+    c = db.cursor()
 
     c.execute("UPDATE users SET password=? WHERE username=?", (password_hash, username))
 
-    conn.commit()
+    db.commit()
 
-    conn.close()
+    db.close()
+
+    s3client.upload_file(os.path.join(os.path.dirname(__file__), 'users.db'), 'damg-test', 'users.db')
 
 
 # Define function to update password in database
 def update_plan(username, new_plan):
 
     # Connect to database
-    conn = sqlite3.connect('users.db')
-    c = conn.cursor()
+    s3client.download_file('damg-test', 'users.db', os.path.join(os.path.dirname(__file__), 'users.db'))
+    db = sqlite3.connect(os.path.join(os.path.dirname(__file__), 'users.db'))
+    c = db.cursor()
 
     c.execute("UPDATE users SET plan=? WHERE username=?", (new_plan, username))
 
-    conn.commit()
+    db.commit()
 
-    conn.close()
+    db.close()
+
+    s3client.upload_file(os.path.join(os.path.dirname(__file__), 'users.db'), 'damg-test', 'users.db')

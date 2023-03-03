@@ -460,8 +460,7 @@ async def fetch_nexrad(year: str, month: str, day: str, station: str,
 
 
 @app.post("/add-user", tags=["CLI"])
-async def add_user(username: str, password: str, email: str, full_name: str, plan: str,
-                   get_current_user: base_model.User = Depends(get_current_user)) -> dict:
+async def add_user(username: str, password: str, email: str, full_name: str, plan: str) -> dict:
 
     basic_func.add_user(username, password, email, full_name, plan)
 
@@ -469,8 +468,7 @@ async def add_user(username: str, password: str, email: str, full_name: str, pla
 
 
 @app.post("/check-user-exists", tags=["CLI"])
-async def check_user_exists(username: str,
-                            get_current_user: base_model.User = Depends(get_current_user)) -> dict:
+async def check_user_exists(username: str) -> dict:
 
     status = basic_func.check_user_exists(username)
 
