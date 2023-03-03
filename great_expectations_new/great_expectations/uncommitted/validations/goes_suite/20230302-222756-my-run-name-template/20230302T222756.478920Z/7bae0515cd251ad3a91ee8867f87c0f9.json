@@ -1,0 +1,1179 @@
+{
+  "evaluation_parameters": {},
+  "meta": {
+    "active_batch_definition": {
+      "batch_identifiers": {},
+      "data_asset_name": "nexrad_data",
+      "data_connector_name": "default_inferred_data_connector_name",
+      "datasource_name": "satellite_datasource"
+    },
+    "batch_markers": {
+      "ge_load_time": "20230303T032756.494048Z",
+      "pandas_data_fingerprint": "bce3bcd142ee87085550d8e523502f68"
+    },
+    "batch_spec": {
+      "path": "/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/great_expectations/data/nexrad_data.csv"
+    },
+    "checkpoint_id": null,
+    "checkpoint_name": "goes_checkpoint_v1",
+    "expectation_suite_name": "goes_suite",
+    "great_expectations_version": "0.15.50",
+    "run_id": {
+      "run_name": "20230302-222756-my-run-name-template",
+      "run_time": "2023-03-02T22:27:56.478920+00:00"
+    },
+    "validation_id": null,
+    "validation_time": "20230303T032756.591764Z"
+  },
+  "results": [
+    {
+      "exception_info": {
+        "exception_message": "Error: The column \"Product\" in BatchData does not exist.",
+        "exception_traceback": "Traceback (most recent call last):\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/execution_engine/execution_engine.py\", line 555, in _process_direct_and_bundled_metric_computation_configurations\n    ] = metric_computation_configuration.metric_fn(\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/expectations/metrics/metric_provider.py\", line 90, in inner_func\n    return metric_fn(*args, **kwargs)\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/expectations/metrics/map_metric_provider.py\", line 360, in inner_func\n    column_name = get_dbms_compatible_column_names(\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/expectations/metrics/util.py\", line 673, in get_dbms_compatible_column_names\n    _verify_column_names_exist_and_get_normalized_typed_column_names_map(\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/expectations/metrics/util.py\", line 752, in _verify_column_names_exist_and_get_normalized_typed_column_names_map\n    raise gx_exceptions.InvalidMetricAccessorDomainKwargsKeyError(\ngreat_expectations.exceptions.exceptions.InvalidMetricAccessorDomainKwargsKeyError: Error: The column \"Product\" in BatchData does not exist.\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/validator/validation_graph.py\", line 276, in _resolve\n    self._execution_engine.resolve_metrics(\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/execution_engine/execution_engine.py\", line 290, in resolve_metrics\n    return self._process_direct_and_bundled_metric_computation_configurations(\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/execution_engine/execution_engine.py\", line 559, in _process_direct_and_bundled_metric_computation_configurations\n    raise gx_exceptions.MetricResolutionError(\ngreat_expectations.exceptions.exceptions.MetricResolutionError: Error: The column \"Product\" in BatchData does not exist.\n",
+        "raised_exception": true
+      },
+      "expectation_config": {
+        "expectation_type": "expect_column_values_to_not_be_null",
+        "kwargs": {
+          "batch_id": "7bae0515cd251ad3a91ee8867f87c0f9",
+          "column": "Product"
+        },
+        "meta": {
+          "profiler_details": {
+            "metric_configuration": {
+              "domain_kwargs": {
+                "column": "Product"
+              },
+              "metric_name": "column_values.nonnull.unexpected_count",
+              "metric_value_kwargs": null
+            },
+            "num_batches": 1
+          }
+        }
+      },
+      "meta": {},
+      "result": {},
+      "success": false
+    },
+    {
+      "exception_info": {
+        "exception_message": "Error: The column \"Product\" in BatchData does not exist.",
+        "exception_traceback": "Traceback (most recent call last):\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/execution_engine/execution_engine.py\", line 555, in _process_direct_and_bundled_metric_computation_configurations\n    ] = metric_computation_configuration.metric_fn(\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/expectations/metrics/metric_provider.py\", line 90, in inner_func\n    return metric_fn(*args, **kwargs)\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/expectations/metrics/map_metric_provider.py\", line 360, in inner_func\n    column_name = get_dbms_compatible_column_names(\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/expectations/metrics/util.py\", line 673, in get_dbms_compatible_column_names\n    _verify_column_names_exist_and_get_normalized_typed_column_names_map(\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/expectations/metrics/util.py\", line 752, in _verify_column_names_exist_and_get_normalized_typed_column_names_map\n    raise gx_exceptions.InvalidMetricAccessorDomainKwargsKeyError(\ngreat_expectations.exceptions.exceptions.InvalidMetricAccessorDomainKwargsKeyError: Error: The column \"Product\" in BatchData does not exist.\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/validator/validation_graph.py\", line 276, in _resolve\n    self._execution_engine.resolve_metrics(\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/execution_engine/execution_engine.py\", line 290, in resolve_metrics\n    return self._process_direct_and_bundled_metric_computation_configurations(\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/execution_engine/execution_engine.py\", line 559, in _process_direct_and_bundled_metric_computation_configurations\n    raise gx_exceptions.MetricResolutionError(\ngreat_expectations.exceptions.exceptions.MetricResolutionError: Error: The column \"Product\" in BatchData does not exist.\n",
+        "raised_exception": true
+      },
+      "expectation_config": {
+        "expectation_type": "expect_column_value_lengths_to_be_between",
+        "kwargs": {
+          "batch_id": "7bae0515cd251ad3a91ee8867f87c0f9",
+          "column": "Product",
+          "max_value": 12,
+          "min_value": 12,
+          "mostly": 1.0,
+          "strict_max": false,
+          "strict_min": false
+        },
+        "meta": {
+          "profiler_details": {
+            "column_max_length_range_estimator": {
+              "metric_configuration": {
+                "domain_kwargs": {
+                  "column": "Product"
+                },
+                "metric_name": "column_values.length.max",
+                "metric_value_kwargs": null
+              },
+              "num_batches": 1
+            },
+            "column_min_length_range_estimator": {
+              "metric_configuration": {
+                "domain_kwargs": {
+                  "column": "Product"
+                },
+                "metric_name": "column_values.length.min",
+                "metric_value_kwargs": null
+              },
+              "num_batches": 1
+            }
+          }
+        }
+      },
+      "meta": {},
+      "result": {},
+      "success": false
+    },
+    {
+      "exception_info": {
+        "exception_message": "Error: The column \"Product\" in BatchData does not exist.",
+        "exception_traceback": "Traceback (most recent call last):\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/execution_engine/execution_engine.py\", line 555, in _process_direct_and_bundled_metric_computation_configurations\n    ] = metric_computation_configuration.metric_fn(\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/expectations/metrics/metric_provider.py\", line 90, in inner_func\n    return metric_fn(*args, **kwargs)\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/expectations/metrics/map_metric_provider.py\", line 133, in inner_func\n    column_name = get_dbms_compatible_column_names(\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/expectations/metrics/util.py\", line 673, in get_dbms_compatible_column_names\n    _verify_column_names_exist_and_get_normalized_typed_column_names_map(\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/expectations/metrics/util.py\", line 752, in _verify_column_names_exist_and_get_normalized_typed_column_names_map\n    raise gx_exceptions.InvalidMetricAccessorDomainKwargsKeyError(\ngreat_expectations.exceptions.exceptions.InvalidMetricAccessorDomainKwargsKeyError: Error: The column \"Product\" in BatchData does not exist.\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/validator/validation_graph.py\", line 276, in _resolve\n    self._execution_engine.resolve_metrics(\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/execution_engine/execution_engine.py\", line 290, in resolve_metrics\n    return self._process_direct_and_bundled_metric_computation_configurations(\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/execution_engine/execution_engine.py\", line 559, in _process_direct_and_bundled_metric_computation_configurations\n    raise gx_exceptions.MetricResolutionError(\ngreat_expectations.exceptions.exceptions.MetricResolutionError: Error: The column \"Product\" in BatchData does not exist.\n",
+        "raised_exception": true
+      },
+      "expectation_config": {
+        "expectation_type": "expect_column_value_lengths_to_be_between",
+        "kwargs": {
+          "batch_id": "7bae0515cd251ad3a91ee8867f87c0f9",
+          "column": "Product",
+          "max_value": 12,
+          "min_value": 12,
+          "mostly": 1.0,
+          "strict_max": false,
+          "strict_min": false
+        },
+        "meta": {
+          "profiler_details": {
+            "column_max_length_range_estimator": {
+              "metric_configuration": {
+                "domain_kwargs": {
+                  "column": "Product"
+                },
+                "metric_name": "column_values.length.max",
+                "metric_value_kwargs": null
+              },
+              "num_batches": 1
+            },
+            "column_min_length_range_estimator": {
+              "metric_configuration": {
+                "domain_kwargs": {
+                  "column": "Product"
+                },
+                "metric_name": "column_values.length.min",
+                "metric_value_kwargs": null
+              },
+              "num_batches": 1
+            }
+          }
+        }
+      },
+      "meta": {},
+      "result": {},
+      "success": false
+    },
+    {
+      "exception_info": {
+        "exception_message": "Error: The column \"Product\" in BatchData does not exist.",
+        "exception_traceback": "Traceback (most recent call last):\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/execution_engine/execution_engine.py\", line 555, in _process_direct_and_bundled_metric_computation_configurations\n    ] = metric_computation_configuration.metric_fn(\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/expectations/metrics/metric_provider.py\", line 90, in inner_func\n    return metric_fn(*args, **kwargs)\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/expectations/metrics/map_metric_provider.py\", line 360, in inner_func\n    column_name = get_dbms_compatible_column_names(\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/expectations/metrics/util.py\", line 673, in get_dbms_compatible_column_names\n    _verify_column_names_exist_and_get_normalized_typed_column_names_map(\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/expectations/metrics/util.py\", line 752, in _verify_column_names_exist_and_get_normalized_typed_column_names_map\n    raise gx_exceptions.InvalidMetricAccessorDomainKwargsKeyError(\ngreat_expectations.exceptions.exceptions.InvalidMetricAccessorDomainKwargsKeyError: Error: The column \"Product\" in BatchData does not exist.\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/validator/validation_graph.py\", line 276, in _resolve\n    self._execution_engine.resolve_metrics(\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/execution_engine/execution_engine.py\", line 290, in resolve_metrics\n    return self._process_direct_and_bundled_metric_computation_configurations(\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/execution_engine/execution_engine.py\", line 559, in _process_direct_and_bundled_metric_computation_configurations\n    raise gx_exceptions.MetricResolutionError(\ngreat_expectations.exceptions.exceptions.MetricResolutionError: Error: The column \"Product\" in BatchData does not exist.\n",
+        "raised_exception": true
+      },
+      "expectation_config": {
+        "expectation_type": "expect_column_values_to_match_regex",
+        "kwargs": {
+          "batch_id": "7bae0515cd251ad3a91ee8867f87c0f9",
+          "column": "Product",
+          "mostly": 1.0,
+          "regex": "-?\\d+"
+        },
+        "meta": {
+          "profiler_details": {
+            "evaluated_regexes": {
+              "(?:25[0-5]|2[0-4]\\d|[01]\\d{2}|\\d{1,2})(?:.(?:25[0-5]|2[0-4]\\d|[01]\\d{2}|\\d{1,2})){3}": 0.0,
+              "-?\\d+": 1.0,
+              "-?\\d+(?:\\.\\d*)?": 1.0,
+              "<\\/?(?:p|a|b|img)(?: \\/)?>": 0.0,
+              "[A-Za-z0-9\\.,;:!?()\\\"'%\\-]+": 1.0,
+              "\\b[0-9a-fA-F]{8}\\b-[0-9a-fA-F]{4}-[0-5][0-9a-fA-F]{3}-[089ab][0-9a-fA-F]{3}-\\b[0-9a-fA-F]{12}\\b ": 0.0,
+              "\\d+": 1.0,
+              "\\s+$": 0.0,
+              "^\\s+": 0.0,
+              "https?:\\/\\/(?:www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{2,255}\\.[a-z]{2,6}\\b(?:[-a-zA-Z0-9@:%_\\+.~#()?&//=]*)": 0.0
+            },
+            "success_ratio": 1.0
+          }
+        }
+      },
+      "meta": {},
+      "result": {},
+      "success": false
+    },
+    {
+      "exception_info": {
+        "exception_message": "Error: The column \"Product\" in BatchData does not exist.",
+        "exception_traceback": "Traceback (most recent call last):\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/execution_engine/execution_engine.py\", line 555, in _process_direct_and_bundled_metric_computation_configurations\n    ] = metric_computation_configuration.metric_fn(\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/expectations/metrics/metric_provider.py\", line 90, in inner_func\n    return metric_fn(*args, **kwargs)\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/expectations/metrics/map_metric_provider.py\", line 360, in inner_func\n    column_name = get_dbms_compatible_column_names(\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/expectations/metrics/util.py\", line 673, in get_dbms_compatible_column_names\n    _verify_column_names_exist_and_get_normalized_typed_column_names_map(\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/expectations/metrics/util.py\", line 752, in _verify_column_names_exist_and_get_normalized_typed_column_names_map\n    raise gx_exceptions.InvalidMetricAccessorDomainKwargsKeyError(\ngreat_expectations.exceptions.exceptions.InvalidMetricAccessorDomainKwargsKeyError: Error: The column \"Product\" in BatchData does not exist.\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/validator/validation_graph.py\", line 276, in _resolve\n    self._execution_engine.resolve_metrics(\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/execution_engine/execution_engine.py\", line 290, in resolve_metrics\n    return self._process_direct_and_bundled_metric_computation_configurations(\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/execution_engine/execution_engine.py\", line 559, in _process_direct_and_bundled_metric_computation_configurations\n    raise gx_exceptions.MetricResolutionError(\ngreat_expectations.exceptions.exceptions.MetricResolutionError: Error: The column \"Product\" in BatchData does not exist.\n",
+        "raised_exception": true
+      },
+      "expectation_config": {
+        "expectation_type": "expect_column_values_to_be_in_set",
+        "kwargs": {
+          "batch_id": "7bae0515cd251ad3a91ee8867f87c0f9",
+          "column": "Product",
+          "mostly": 1.0,
+          "value_set": [
+            "ABI-L1b-RadC"
+          ]
+        },
+        "meta": {
+          "profiler_details": {
+            "metric_configuration": {
+              "domain_kwargs": {
+                "column": "Product"
+              },
+              "metric_name": "column.distinct_values",
+              "metric_value_kwargs": null
+            },
+            "num_batches": 1,
+            "parse_strings_as_datetimes": false
+          }
+        }
+      },
+      "meta": {},
+      "result": {},
+      "success": false
+    },
+    {
+      "exception_info": {
+        "exception_message": "Error: The column \"Hour\" in BatchData does not exist.",
+        "exception_traceback": "Traceback (most recent call last):\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/execution_engine/execution_engine.py\", line 555, in _process_direct_and_bundled_metric_computation_configurations\n    ] = metric_computation_configuration.metric_fn(\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/expectations/metrics/metric_provider.py\", line 90, in inner_func\n    return metric_fn(*args, **kwargs)\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/expectations/metrics/map_metric_provider.py\", line 360, in inner_func\n    column_name = get_dbms_compatible_column_names(\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/expectations/metrics/util.py\", line 673, in get_dbms_compatible_column_names\n    _verify_column_names_exist_and_get_normalized_typed_column_names_map(\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/expectations/metrics/util.py\", line 752, in _verify_column_names_exist_and_get_normalized_typed_column_names_map\n    raise gx_exceptions.InvalidMetricAccessorDomainKwargsKeyError(\ngreat_expectations.exceptions.exceptions.InvalidMetricAccessorDomainKwargsKeyError: Error: The column \"Hour\" in BatchData does not exist.\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/validator/validation_graph.py\", line 276, in _resolve\n    self._execution_engine.resolve_metrics(\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/execution_engine/execution_engine.py\", line 290, in resolve_metrics\n    return self._process_direct_and_bundled_metric_computation_configurations(\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/execution_engine/execution_engine.py\", line 559, in _process_direct_and_bundled_metric_computation_configurations\n    raise gx_exceptions.MetricResolutionError(\ngreat_expectations.exceptions.exceptions.MetricResolutionError: Error: The column \"Hour\" in BatchData does not exist.\n",
+        "raised_exception": true
+      },
+      "expectation_config": {
+        "expectation_type": "expect_column_values_to_not_be_null",
+        "kwargs": {
+          "batch_id": "7bae0515cd251ad3a91ee8867f87c0f9",
+          "column": "Hour"
+        },
+        "meta": {
+          "profiler_details": {
+            "metric_configuration": {
+              "domain_kwargs": {
+                "column": "Hour"
+              },
+              "metric_name": "column_values.nonnull.unexpected_count",
+              "metric_value_kwargs": null
+            },
+            "num_batches": 1
+          }
+        }
+      },
+      "meta": {},
+      "result": {},
+      "success": false
+    },
+    {
+      "exception_info": {
+        "exception_message": "Error: The column \"Hour\" in BatchData does not exist.",
+        "exception_traceback": "Traceback (most recent call last):\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/execution_engine/execution_engine.py\", line 555, in _process_direct_and_bundled_metric_computation_configurations\n    ] = metric_computation_configuration.metric_fn(\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/expectations/metrics/metric_provider.py\", line 50, in inner_func\n    return metric_fn(*args, **kwargs)\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/expectations/metrics/column_aggregate_metric_provider.py\", line 77, in inner_func\n    column_name = get_dbms_compatible_column_names(\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/expectations/metrics/util.py\", line 673, in get_dbms_compatible_column_names\n    _verify_column_names_exist_and_get_normalized_typed_column_names_map(\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/expectations/metrics/util.py\", line 752, in _verify_column_names_exist_and_get_normalized_typed_column_names_map\n    raise gx_exceptions.InvalidMetricAccessorDomainKwargsKeyError(\ngreat_expectations.exceptions.exceptions.InvalidMetricAccessorDomainKwargsKeyError: Error: The column \"Hour\" in BatchData does not exist.\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/validator/validation_graph.py\", line 276, in _resolve\n    self._execution_engine.resolve_metrics(\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/execution_engine/execution_engine.py\", line 290, in resolve_metrics\n    return self._process_direct_and_bundled_metric_computation_configurations(\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/execution_engine/execution_engine.py\", line 559, in _process_direct_and_bundled_metric_computation_configurations\n    raise gx_exceptions.MetricResolutionError(\ngreat_expectations.exceptions.exceptions.MetricResolutionError: Error: The column \"Hour\" in BatchData does not exist.\n",
+        "raised_exception": true
+      },
+      "expectation_config": {
+        "expectation_type": "expect_column_min_to_be_between",
+        "kwargs": {
+          "batch_id": "7bae0515cd251ad3a91ee8867f87c0f9",
+          "column": "Hour",
+          "max_value": 0,
+          "min_value": 0,
+          "strict_max": false,
+          "strict_min": false
+        },
+        "meta": {
+          "profiler_details": {
+            "metric_configuration": {
+              "domain_kwargs": {
+                "column": "Hour"
+              },
+              "metric_name": "column.min",
+              "metric_value_kwargs": null
+            },
+            "num_batches": 1
+          }
+        }
+      },
+      "meta": {},
+      "result": {},
+      "success": false
+    },
+    {
+      "exception_info": {
+        "exception_message": "Error: The column \"Hour\" in BatchData does not exist.",
+        "exception_traceback": "Traceback (most recent call last):\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/execution_engine/execution_engine.py\", line 555, in _process_direct_and_bundled_metric_computation_configurations\n    ] = metric_computation_configuration.metric_fn(\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/expectations/metrics/metric_provider.py\", line 50, in inner_func\n    return metric_fn(*args, **kwargs)\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/expectations/metrics/column_aggregate_metric_provider.py\", line 77, in inner_func\n    column_name = get_dbms_compatible_column_names(\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/expectations/metrics/util.py\", line 673, in get_dbms_compatible_column_names\n    _verify_column_names_exist_and_get_normalized_typed_column_names_map(\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/expectations/metrics/util.py\", line 752, in _verify_column_names_exist_and_get_normalized_typed_column_names_map\n    raise gx_exceptions.InvalidMetricAccessorDomainKwargsKeyError(\ngreat_expectations.exceptions.exceptions.InvalidMetricAccessorDomainKwargsKeyError: Error: The column \"Hour\" in BatchData does not exist.\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/validator/validation_graph.py\", line 276, in _resolve\n    self._execution_engine.resolve_metrics(\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/execution_engine/execution_engine.py\", line 290, in resolve_metrics\n    return self._process_direct_and_bundled_metric_computation_configurations(\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/execution_engine/execution_engine.py\", line 559, in _process_direct_and_bundled_metric_computation_configurations\n    raise gx_exceptions.MetricResolutionError(\ngreat_expectations.exceptions.exceptions.MetricResolutionError: Error: The column \"Hour\" in BatchData does not exist.\n",
+        "raised_exception": true
+      },
+      "expectation_config": {
+        "expectation_type": "expect_column_max_to_be_between",
+        "kwargs": {
+          "batch_id": "7bae0515cd251ad3a91ee8867f87c0f9",
+          "column": "Hour",
+          "max_value": 23,
+          "min_value": 23,
+          "strict_max": false,
+          "strict_min": false
+        },
+        "meta": {
+          "profiler_details": {
+            "metric_configuration": {
+              "domain_kwargs": {
+                "column": "Hour"
+              },
+              "metric_name": "column.max",
+              "metric_value_kwargs": null
+            },
+            "num_batches": 1
+          }
+        }
+      },
+      "meta": {},
+      "result": {},
+      "success": false
+    },
+    {
+      "exception_info": {
+        "exception_message": "Error: The column \"Hour\" in BatchData does not exist.",
+        "exception_traceback": "Traceback (most recent call last):\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/execution_engine/execution_engine.py\", line 555, in _process_direct_and_bundled_metric_computation_configurations\n    ] = metric_computation_configuration.metric_fn(\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/expectations/metrics/metric_provider.py\", line 90, in inner_func\n    return metric_fn(*args, **kwargs)\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/expectations/metrics/map_metric_provider.py\", line 360, in inner_func\n    column_name = get_dbms_compatible_column_names(\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/expectations/metrics/util.py\", line 673, in get_dbms_compatible_column_names\n    _verify_column_names_exist_and_get_normalized_typed_column_names_map(\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/expectations/metrics/util.py\", line 752, in _verify_column_names_exist_and_get_normalized_typed_column_names_map\n    raise gx_exceptions.InvalidMetricAccessorDomainKwargsKeyError(\ngreat_expectations.exceptions.exceptions.InvalidMetricAccessorDomainKwargsKeyError: Error: The column \"Hour\" in BatchData does not exist.\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/validator/validation_graph.py\", line 276, in _resolve\n    self._execution_engine.resolve_metrics(\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/execution_engine/execution_engine.py\", line 290, in resolve_metrics\n    return self._process_direct_and_bundled_metric_computation_configurations(\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/execution_engine/execution_engine.py\", line 559, in _process_direct_and_bundled_metric_computation_configurations\n    raise gx_exceptions.MetricResolutionError(\ngreat_expectations.exceptions.exceptions.MetricResolutionError: Error: The column \"Hour\" in BatchData does not exist.\n",
+        "raised_exception": true
+      },
+      "expectation_config": {
+        "expectation_type": "expect_column_values_to_be_between",
+        "kwargs": {
+          "batch_id": "7bae0515cd251ad3a91ee8867f87c0f9",
+          "column": "Hour",
+          "max_value": 23,
+          "min_value": 0,
+          "mostly": 1.0,
+          "strict_max": false,
+          "strict_min": false
+        },
+        "meta": {
+          "profiler_details": {
+            "column_max_values_range_estimator": {
+              "metric_configuration": {
+                "domain_kwargs": {
+                  "column": "Hour"
+                },
+                "metric_name": "column.max",
+                "metric_value_kwargs": null
+              },
+              "num_batches": 1
+            },
+            "column_min_values_range_estimator": {
+              "metric_configuration": {
+                "domain_kwargs": {
+                  "column": "Hour"
+                },
+                "metric_name": "column.min",
+                "metric_value_kwargs": null
+              },
+              "num_batches": 1
+            }
+          }
+        }
+      },
+      "meta": {},
+      "result": {},
+      "success": false
+    },
+    {
+      "exception_info": {
+        "exception_message": "Error: The column \"Hour\" in BatchData does not exist.",
+        "exception_traceback": "Traceback (most recent call last):\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/execution_engine/execution_engine.py\", line 555, in _process_direct_and_bundled_metric_computation_configurations\n    ] = metric_computation_configuration.metric_fn(\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/expectations/metrics/metric_provider.py\", line 90, in inner_func\n    return metric_fn(*args, **kwargs)\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/expectations/metrics/map_metric_provider.py\", line 360, in inner_func\n    column_name = get_dbms_compatible_column_names(\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/expectations/metrics/util.py\", line 673, in get_dbms_compatible_column_names\n    _verify_column_names_exist_and_get_normalized_typed_column_names_map(\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/expectations/metrics/util.py\", line 752, in _verify_column_names_exist_and_get_normalized_typed_column_names_map\n    raise gx_exceptions.InvalidMetricAccessorDomainKwargsKeyError(\ngreat_expectations.exceptions.exceptions.InvalidMetricAccessorDomainKwargsKeyError: Error: The column \"Hour\" in BatchData does not exist.\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/validator/validation_graph.py\", line 276, in _resolve\n    self._execution_engine.resolve_metrics(\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/execution_engine/execution_engine.py\", line 290, in resolve_metrics\n    return self._process_direct_and_bundled_metric_computation_configurations(\n  File \"/home/ananthakrishnan/Desktop/Assignment 3/Trial2/Assignment_3/great_expectations_new/venvge/lib/python3.10/site-packages/great_expectations/execution_engine/execution_engine.py\", line 559, in _process_direct_and_bundled_metric_computation_configurations\n    raise gx_exceptions.MetricResolutionError(\ngreat_expectations.exceptions.exceptions.MetricResolutionError: Error: The column \"Hour\" in BatchData does not exist.\n",
+        "raised_exception": true
+      },
+      "expectation_config": {
+        "expectation_type": "expect_column_values_to_be_in_set",
+        "kwargs": {
+          "batch_id": "7bae0515cd251ad3a91ee8867f87c0f9",
+          "column": "Hour",
+          "mostly": 1.0,
+          "value_set": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23
+          ]
+        },
+        "meta": {
+          "profiler_details": {
+            "metric_configuration": {
+              "domain_kwargs": {
+                "column": "Hour"
+              },
+              "metric_name": "column.distinct_values",
+              "metric_value_kwargs": null
+            },
+            "num_batches": 1,
+            "parse_strings_as_datetimes": false
+          }
+        }
+      },
+      "meta": {},
+      "result": {},
+      "success": false
+    },
+    {
+      "exception_info": {
+        "exception_message": null,
+        "exception_traceback": null,
+        "raised_exception": false
+      },
+      "expectation_config": {
+        "expectation_type": "expect_table_row_count_to_be_between",
+        "kwargs": {
+          "batch_id": "7bae0515cd251ad3a91ee8867f87c0f9",
+          "max_value": 4912,
+          "min_value": 4912
+        },
+        "meta": {
+          "profiler_details": {
+            "metric_configuration": {
+              "domain_kwargs": {},
+              "metric_name": "table.row_count",
+              "metric_value_kwargs": null
+            },
+            "num_batches": 1
+          }
+        }
+      },
+      "meta": {},
+      "result": {
+        "observed_value": 84155
+      },
+      "success": false
+    },
+    {
+      "exception_info": {
+        "exception_message": null,
+        "exception_traceback": null,
+        "raised_exception": false
+      },
+      "expectation_config": {
+        "expectation_type": "expect_table_columns_to_match_set",
+        "kwargs": {
+          "batch_id": "7bae0515cd251ad3a91ee8867f87c0f9",
+          "column_set": [
+            "Hour",
+            "Pkey",
+            "Product",
+            "Year",
+            "Day"
+          ]
+        },
+        "meta": {
+          "profiler_details": {
+            "success_ratio": 1.0
+          }
+        }
+      },
+      "meta": {},
+      "result": {
+        "details": {
+          "mismatched": {
+            "missing": [
+              "Hour",
+              "Product"
+            ],
+            "unexpected": [
+              "Month",
+              "Station"
+            ]
+          }
+        },
+        "observed_value": [
+          "Day",
+          "Month",
+          "Pkey",
+          "Station",
+          "Year"
+        ]
+      },
+      "success": false
+    },
+    {
+      "exception_info": {
+        "exception_message": null,
+        "exception_traceback": null,
+        "raised_exception": false
+      },
+      "expectation_config": {
+        "expectation_type": "expect_column_values_to_be_unique",
+        "kwargs": {
+          "batch_id": "7bae0515cd251ad3a91ee8867f87c0f9",
+          "column": "Pkey"
+        },
+        "meta": {
+          "profiler_details": {
+            "metric_configuration": {
+              "domain_kwargs": {
+                "column": "Pkey"
+              },
+              "metric_name": "column_values.unique.unexpected_count",
+              "metric_value_kwargs": null
+            },
+            "num_batches": 1
+          }
+        }
+      },
+      "meta": {},
+      "result": {
+        "element_count": 84155,
+        "missing_count": 0,
+        "missing_percent": 0.0,
+        "partial_unexpected_counts": [],
+        "partial_unexpected_index_list": [],
+        "partial_unexpected_list": [],
+        "unexpected_count": 0,
+        "unexpected_percent": 0.0,
+        "unexpected_percent_nonmissing": 0.0,
+        "unexpected_percent_total": 0.0
+      },
+      "success": true
+    },
+    {
+      "exception_info": {
+        "exception_message": null,
+        "exception_traceback": null,
+        "raised_exception": false
+      },
+      "expectation_config": {
+        "expectation_type": "expect_column_values_to_not_be_null",
+        "kwargs": {
+          "batch_id": "7bae0515cd251ad3a91ee8867f87c0f9",
+          "column": "Pkey"
+        },
+        "meta": {
+          "profiler_details": {
+            "metric_configuration": {
+              "domain_kwargs": {
+                "column": "Pkey"
+              },
+              "metric_name": "column_values.nonnull.unexpected_count",
+              "metric_value_kwargs": null
+            },
+            "num_batches": 1
+          }
+        }
+      },
+      "meta": {},
+      "result": {
+        "element_count": 84155,
+        "partial_unexpected_counts": [],
+        "partial_unexpected_index_list": [],
+        "partial_unexpected_list": [],
+        "unexpected_count": 0,
+        "unexpected_percent": 0.0
+      },
+      "success": true
+    },
+    {
+      "exception_info": {
+        "exception_message": null,
+        "exception_traceback": null,
+        "raised_exception": false
+      },
+      "expectation_config": {
+        "expectation_type": "expect_column_value_lengths_to_be_between",
+        "kwargs": {
+          "batch_id": "7bae0515cd251ad3a91ee8867f87c0f9",
+          "column": "Pkey",
+          "max_value": 21,
+          "min_value": 21,
+          "mostly": 1.0,
+          "strict_max": false,
+          "strict_min": false
+        },
+        "meta": {
+          "profiler_details": {
+            "column_max_length_range_estimator": {
+              "metric_configuration": {
+                "domain_kwargs": {
+                  "column": "Pkey"
+                },
+                "metric_name": "column_values.length.max",
+                "metric_value_kwargs": null
+              },
+              "num_batches": 1
+            },
+            "column_min_length_range_estimator": {
+              "metric_configuration": {
+                "domain_kwargs": {
+                  "column": "Pkey"
+                },
+                "metric_name": "column_values.length.min",
+                "metric_value_kwargs": null
+              },
+              "num_batches": 1
+            }
+          }
+        }
+      },
+      "meta": {},
+      "result": {
+        "element_count": 84155,
+        "missing_count": 0,
+        "missing_percent": 0.0,
+        "partial_unexpected_counts": [
+          {
+            "count": 1,
+            "value": "20230201DOP1"
+          },
+          {
+            "count": 1,
+            "value": "20230201KABR"
+          },
+          {
+            "count": 1,
+            "value": "20230201KABX"
+          },
+          {
+            "count": 1,
+            "value": "20230201KAKQ"
+          },
+          {
+            "count": 1,
+            "value": "20230201KAMA"
+          },
+          {
+            "count": 1,
+            "value": "20230201KAMX"
+          },
+          {
+            "count": 1,
+            "value": "20230201KAPX"
+          },
+          {
+            "count": 1,
+            "value": "20230201KARX"
+          },
+          {
+            "count": 1,
+            "value": "20230201KATX"
+          },
+          {
+            "count": 1,
+            "value": "20230201KBBX"
+          },
+          {
+            "count": 1,
+            "value": "20230201KBGM"
+          },
+          {
+            "count": 1,
+            "value": "20230201KBHX"
+          },
+          {
+            "count": 1,
+            "value": "20230201KBIS"
+          },
+          {
+            "count": 1,
+            "value": "20230201KBLX"
+          },
+          {
+            "count": 1,
+            "value": "20230201KBMX"
+          },
+          {
+            "count": 1,
+            "value": "20230201KBOX"
+          },
+          {
+            "count": 1,
+            "value": "20230201KBRO"
+          },
+          {
+            "count": 1,
+            "value": "20230201KBUF"
+          },
+          {
+            "count": 1,
+            "value": "20230201KBYX"
+          },
+          {
+            "count": 1,
+            "value": "20230201KCAE"
+          }
+        ],
+        "partial_unexpected_index_list": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ],
+        "partial_unexpected_list": [
+          "20230201DOP1",
+          "20230201KABR",
+          "20230201KABX",
+          "20230201KAKQ",
+          "20230201KAMA",
+          "20230201KAMX",
+          "20230201KAPX",
+          "20230201KARX",
+          "20230201KATX",
+          "20230201KBBX",
+          "20230201KBGM",
+          "20230201KBHX",
+          "20230201KBIS",
+          "20230201KBLX",
+          "20230201KBMX",
+          "20230201KBOX",
+          "20230201KBRO",
+          "20230201KBUF",
+          "20230201KBYX",
+          "20230201KCAE"
+        ],
+        "unexpected_count": 84155,
+        "unexpected_percent": 100.0,
+        "unexpected_percent_nonmissing": 100.0,
+        "unexpected_percent_total": 100.0
+      },
+      "success": false
+    },
+    {
+      "exception_info": {
+        "exception_message": null,
+        "exception_traceback": null,
+        "raised_exception": false
+      },
+      "expectation_config": {
+        "expectation_type": "expect_column_values_to_match_regex",
+        "kwargs": {
+          "batch_id": "7bae0515cd251ad3a91ee8867f87c0f9",
+          "column": "Pkey",
+          "mostly": 1.0,
+          "regex": "-?\\d+"
+        },
+        "meta": {
+          "profiler_details": {
+            "evaluated_regexes": {
+              "(?:25[0-5]|2[0-4]\\d|[01]\\d{2}|\\d{1,2})(?:.(?:25[0-5]|2[0-4]\\d|[01]\\d{2}|\\d{1,2})){3}": 1.0,
+              "-?\\d+": 1.0,
+              "-?\\d+(?:\\.\\d*)?": 1.0,
+              "<\\/?(?:p|a|b|img)(?: \\/)?>": 0.0,
+              "[A-Za-z0-9\\.,;:!?()\\\"'%\\-]+": 1.0,
+              "\\b[0-9a-fA-F]{8}\\b-[0-9a-fA-F]{4}-[0-5][0-9a-fA-F]{3}-[089ab][0-9a-fA-F]{3}-\\b[0-9a-fA-F]{12}\\b ": 0.0,
+              "\\d+": 1.0,
+              "\\s+$": 0.0,
+              "^\\s+": 0.0,
+              "https?:\\/\\/(?:www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{2,255}\\.[a-z]{2,6}\\b(?:[-a-zA-Z0-9@:%_\\+.~#()?&//=]*)": 0.0
+            },
+            "success_ratio": 1.0
+          }
+        }
+      },
+      "meta": {},
+      "result": {
+        "element_count": 84155,
+        "missing_count": 0,
+        "missing_percent": 0.0,
+        "partial_unexpected_counts": [],
+        "partial_unexpected_index_list": [],
+        "partial_unexpected_list": [],
+        "unexpected_count": 0,
+        "unexpected_percent": 0.0,
+        "unexpected_percent_nonmissing": 0.0,
+        "unexpected_percent_total": 0.0
+      },
+      "success": true
+    },
+    {
+      "exception_info": {
+        "exception_message": null,
+        "exception_traceback": null,
+        "raised_exception": false
+      },
+      "expectation_config": {
+        "expectation_type": "expect_column_values_to_not_be_null",
+        "kwargs": {
+          "batch_id": "7bae0515cd251ad3a91ee8867f87c0f9",
+          "column": "Year"
+        },
+        "meta": {
+          "profiler_details": {
+            "metric_configuration": {
+              "domain_kwargs": {
+                "column": "Year"
+              },
+              "metric_name": "column_values.nonnull.unexpected_count",
+              "metric_value_kwargs": null
+            },
+            "num_batches": 1
+          }
+        }
+      },
+      "meta": {},
+      "result": {
+        "element_count": 84155,
+        "partial_unexpected_counts": [],
+        "partial_unexpected_index_list": [],
+        "partial_unexpected_list": [],
+        "unexpected_count": 0,
+        "unexpected_percent": 0.0
+      },
+      "success": true
+    },
+    {
+      "exception_info": {
+        "exception_message": null,
+        "exception_traceback": null,
+        "raised_exception": false
+      },
+      "expectation_config": {
+        "expectation_type": "expect_column_min_to_be_between",
+        "kwargs": {
+          "batch_id": "7bae0515cd251ad3a91ee8867f87c0f9",
+          "column": "Year",
+          "max_value": 2022,
+          "min_value": 2022,
+          "strict_max": false,
+          "strict_min": false
+        },
+        "meta": {
+          "profiler_details": {
+            "metric_configuration": {
+              "domain_kwargs": {
+                "column": "Year"
+              },
+              "metric_name": "column.min",
+              "metric_value_kwargs": null
+            },
+            "num_batches": 1
+          }
+        }
+      },
+      "meta": {},
+      "result": {
+        "observed_value": 2022
+      },
+      "success": true
+    },
+    {
+      "exception_info": {
+        "exception_message": null,
+        "exception_traceback": null,
+        "raised_exception": false
+      },
+      "expectation_config": {
+        "expectation_type": "expect_column_max_to_be_between",
+        "kwargs": {
+          "batch_id": "7bae0515cd251ad3a91ee8867f87c0f9",
+          "column": "Year",
+          "max_value": 2023,
+          "min_value": 2023,
+          "strict_max": false,
+          "strict_min": false
+        },
+        "meta": {
+          "profiler_details": {
+            "metric_configuration": {
+              "domain_kwargs": {
+                "column": "Year"
+              },
+              "metric_name": "column.max",
+              "metric_value_kwargs": null
+            },
+            "num_batches": 1
+          }
+        }
+      },
+      "meta": {},
+      "result": {
+        "observed_value": 2023
+      },
+      "success": true
+    },
+    {
+      "exception_info": {
+        "exception_message": null,
+        "exception_traceback": null,
+        "raised_exception": false
+      },
+      "expectation_config": {
+        "expectation_type": "expect_column_values_to_be_between",
+        "kwargs": {
+          "batch_id": "7bae0515cd251ad3a91ee8867f87c0f9",
+          "column": "Year",
+          "max_value": 2023,
+          "min_value": 2022,
+          "mostly": 1.0,
+          "strict_max": false,
+          "strict_min": false
+        },
+        "meta": {
+          "profiler_details": {
+            "column_max_values_range_estimator": {
+              "metric_configuration": {
+                "domain_kwargs": {
+                  "column": "Year"
+                },
+                "metric_name": "column.max",
+                "metric_value_kwargs": null
+              },
+              "num_batches": 1
+            },
+            "column_min_values_range_estimator": {
+              "metric_configuration": {
+                "domain_kwargs": {
+                  "column": "Year"
+                },
+                "metric_name": "column.min",
+                "metric_value_kwargs": null
+              },
+              "num_batches": 1
+            }
+          }
+        }
+      },
+      "meta": {},
+      "result": {
+        "element_count": 84155,
+        "missing_count": 0,
+        "missing_percent": 0.0,
+        "partial_unexpected_counts": [],
+        "partial_unexpected_index_list": [],
+        "partial_unexpected_list": [],
+        "unexpected_count": 0,
+        "unexpected_percent": 0.0,
+        "unexpected_percent_nonmissing": 0.0,
+        "unexpected_percent_total": 0.0
+      },
+      "success": true
+    },
+    {
+      "exception_info": {
+        "exception_message": null,
+        "exception_traceback": null,
+        "raised_exception": false
+      },
+      "expectation_config": {
+        "expectation_type": "expect_column_values_to_be_in_set",
+        "kwargs": {
+          "batch_id": "7bae0515cd251ad3a91ee8867f87c0f9",
+          "column": "Year",
+          "mostly": 1.0,
+          "value_set": [
+            2022,
+            2023
+          ]
+        },
+        "meta": {
+          "profiler_details": {
+            "metric_configuration": {
+              "domain_kwargs": {
+                "column": "Year"
+              },
+              "metric_name": "column.distinct_values",
+              "metric_value_kwargs": null
+            },
+            "num_batches": 1,
+            "parse_strings_as_datetimes": false
+          }
+        }
+      },
+      "meta": {},
+      "result": {
+        "element_count": 84155,
+        "missing_count": 0,
+        "missing_percent": 0.0,
+        "partial_unexpected_counts": [],
+        "partial_unexpected_index_list": [],
+        "partial_unexpected_list": [],
+        "unexpected_count": 0,
+        "unexpected_percent": 0.0,
+        "unexpected_percent_nonmissing": 0.0,
+        "unexpected_percent_total": 0.0
+      },
+      "success": true
+    },
+    {
+      "exception_info": {
+        "exception_message": null,
+        "exception_traceback": null,
+        "raised_exception": false
+      },
+      "expectation_config": {
+        "expectation_type": "expect_column_values_to_not_be_null",
+        "kwargs": {
+          "batch_id": "7bae0515cd251ad3a91ee8867f87c0f9",
+          "column": "Day"
+        },
+        "meta": {
+          "profiler_details": {
+            "metric_configuration": {
+              "domain_kwargs": {
+                "column": "Day"
+              },
+              "metric_name": "column_values.nonnull.unexpected_count",
+              "metric_value_kwargs": null
+            },
+            "num_batches": 1
+          }
+        }
+      },
+      "meta": {},
+      "result": {
+        "element_count": 84155,
+        "partial_unexpected_counts": [],
+        "partial_unexpected_index_list": [],
+        "partial_unexpected_list": [],
+        "unexpected_count": 0,
+        "unexpected_percent": 0.0
+      },
+      "success": true
+    },
+    {
+      "exception_info": {
+        "exception_message": null,
+        "exception_traceback": null,
+        "raised_exception": false
+      },
+      "expectation_config": {
+        "expectation_type": "expect_column_min_to_be_between",
+        "kwargs": {
+          "batch_id": "7bae0515cd251ad3a91ee8867f87c0f9",
+          "column": "Day",
+          "max_value": 1,
+          "min_value": 1,
+          "strict_max": false,
+          "strict_min": false
+        },
+        "meta": {
+          "profiler_details": {
+            "metric_configuration": {
+              "domain_kwargs": {
+                "column": "Day"
+              },
+              "metric_name": "column.min",
+              "metric_value_kwargs": null
+            },
+            "num_batches": 1
+          }
+        }
+      },
+      "meta": {},
+      "result": {
+        "observed_value": 1
+      },
+      "success": true
+    },
+    {
+      "exception_info": {
+        "exception_message": null,
+        "exception_traceback": null,
+        "raised_exception": false
+      },
+      "expectation_config": {
+        "expectation_type": "expect_column_max_to_be_between",
+        "kwargs": {
+          "batch_id": "7bae0515cd251ad3a91ee8867f87c0f9",
+          "column": "Day",
+          "max_value": 365,
+          "min_value": 365,
+          "strict_max": false,
+          "strict_min": false
+        },
+        "meta": {
+          "profiler_details": {
+            "metric_configuration": {
+              "domain_kwargs": {
+                "column": "Day"
+              },
+              "metric_name": "column.max",
+              "metric_value_kwargs": null
+            },
+            "num_batches": 1
+          }
+        }
+      },
+      "meta": {},
+      "result": {
+        "observed_value": 31
+      },
+      "success": false
+    },
+    {
+      "exception_info": {
+        "exception_message": null,
+        "exception_traceback": null,
+        "raised_exception": false
+      },
+      "expectation_config": {
+        "expectation_type": "expect_column_values_to_be_between",
+        "kwargs": {
+          "batch_id": "7bae0515cd251ad3a91ee8867f87c0f9",
+          "column": "Day",
+          "max_value": 365,
+          "min_value": 1,
+          "mostly": 1.0,
+          "strict_max": false,
+          "strict_min": false
+        },
+        "meta": {
+          "profiler_details": {
+            "column_max_values_range_estimator": {
+              "metric_configuration": {
+                "domain_kwargs": {
+                  "column": "Day"
+                },
+                "metric_name": "column.max",
+                "metric_value_kwargs": null
+              },
+              "num_batches": 1
+            },
+            "column_min_values_range_estimator": {
+              "metric_configuration": {
+                "domain_kwargs": {
+                  "column": "Day"
+                },
+                "metric_name": "column.min",
+                "metric_value_kwargs": null
+              },
+              "num_batches": 1
+            }
+          }
+        }
+      },
+      "meta": {},
+      "result": {
+        "element_count": 84155,
+        "missing_count": 0,
+        "missing_percent": 0.0,
+        "partial_unexpected_counts": [],
+        "partial_unexpected_index_list": [],
+        "partial_unexpected_list": [],
+        "unexpected_count": 0,
+        "unexpected_percent": 0.0,
+        "unexpected_percent_nonmissing": 0.0,
+        "unexpected_percent_total": 0.0
+      },
+      "success": true
+    }
+  ],
+  "statistics": {
+    "evaluated_expectations": 25,
+    "success_percent": 44.0,
+    "successful_expectations": 11,
+    "unsuccessful_expectations": 14
+  },
+  "success": false
+}
