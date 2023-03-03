@@ -121,7 +121,6 @@ def write_logs_goes(message : str):
     ]                            
     )
 
-
 #Generating logs with given message in cloudwatch
 def write_logs_nexrad(message : str):
     clientlogs.put_log_events(
