@@ -6,8 +6,8 @@ import os
 #Establish connection to client
 s3client = boto3.client('s3', 
                         region_name = 'us-east-1',
-                        aws_access_key_id = "AKIAU27WT3VNNLWMTSGP",
-                        aws_secret_access_key = "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"
+                        aws_access_key_id = os.environ.get('AWS_ACCESS_KEY'),
+                        aws_secret_access_key = os.environ.get('AWS_SECRET_KEY')
                         )
 
 def update_users_api_record(endpoint: str, response_status: str, userid: str):
