@@ -464,28 +464,18 @@ async def conn_close(c):
     c.close()  
 
 
-async def add_user(username, password, email, full_name, plan):
+def add_user(username, password, email, full_name, plan):
 
-    # Get the absolute path to the directory containing this file
-    dirname = os.path.dirname(os.path.abspath(__file__))
+    s3client.download_file('damg-test', 'users.db', os.path.join(os.path.dirname(__file__), 'users.db'))
 
-    # Specify the path to the database file
-    db_path = os.path.join(dirname, 'users.db')
+    local_path = os.path.join(os.path.dirname(__file__), 'users.db')
 
     # Establish connection to users database
-    db = sqlite3.connect(db_path)
+    db = sqlite3.connect(local_path)
     cursor = db.cursor()
-
-    # Create a table to store user details
-    cursor.execute('''CREATE TABLE IF NOT EXISTS users 
-                (username TEXT PRIMARY KEY, 
-                fullname TEXT, 
-                password TEXT NOT NULL, 
-                plan TEXT NOT NULL,
-                call_count INTEGER)''')
     
     # Hashing the password
-    password_hash = hashlib.sha256(password.encode()).hexdigest()
+    password_hash = pwd_context.hash(password)
 
     if plan == 'free':
         call_count = 10
@@ -501,6 +491,10 @@ async def add_user(username, password, email, full_name, plan):
     db.commit()
 
     db.close()
+
+    s3client.upload_file(os.path.join(os.path.dirname(__file__), 'users.db'), 'damg-test', 'users.db')
+
+    return(f"User {username} created successfully with name {full_name} and subscription tier {plan}.")
 
 
 # Define function to check if user already exists in database
@@ -681,7 +675,7 @@ def update_users_api_record(endpoint: str, response_status: str, userid: str):
 def update_password(username, password):
 
     # Hashing the password
-    password_hash = hashlib.sha256(password.encode()).hexdigest()
+    password_hash = pwd_context.hash(password)
 
     # Connect to database
     conn = sqlite3.connect('users.db')

@@ -460,17 +460,15 @@ async def fetch_nexrad(year: str, month: str, day: str, station: str,
 
 
 @app.post("/add-user", tags=["CLI"])
-async def add_user(username: str, password: str, email: str, full_name: str, plan: str,
-                   get_current_user: base_model.User = Depends(get_current_user)) -> dict:
+async def add_user_cli(username: str, password: str, email: str, full_name: str, plan: str) -> dict:
 
-    basic_func.add_user(username, password, email, full_name, plan)
+    output = basic_func.add_user(username, password, email, full_name, plan)
 
-    return {"user" : "User added"}
+    return {"user" : output}
 
 
 @app.post("/check-user-exists", tags=["CLI"])
-async def check_user_exists(username: str,
-                            get_current_user: base_model.User = Depends(get_current_user)) -> dict:
+async def check_user_exists(username: str) -> dict:
 
     status = basic_func.check_user_exists(username)
 
@@ -487,7 +485,7 @@ async def check_users_api_record(username: str) -> dict:
 
 
 @app.post("/update-users-api-record", tags=["CLI"])
-async def update_users_api_record(url: str, response: str, username: str) -> dict:
+def update_users_api_record(url: str, response: str, username: str) -> dict:
 
     status = basic_func.update_users_api_record(url, response, username)
 
@@ -495,7 +493,7 @@ async def update_users_api_record(url: str, response: str, username: str) -> dic
 
 
 @app.post("/update-password", tags=["CLI"])
-async def update_password(username: str, password: str) -> dict:
+def update_password(username: str, password: str) -> dict:
 
     basic_func.update_password(username, password)
 
@@ -503,7 +501,7 @@ async def update_password(username: str, password: str) -> dict:
 
 
 @app.post("/update-plan", tags=["CLI"])
-async def update_plan(username: str, new_plan: str) -> dict:
+def update_plan(username: str, new_plan: str) -> dict:
 
     basic_func.update_plan(username, new_plan)
 
@@ -511,7 +509,7 @@ async def update_plan(username: str, new_plan: str) -> dict:
 
 
 @app.post("/app-api-record", tags=["CLI"])
-async def app_api_record() -> dict:
+def app_api_record() -> dict:
 
     # Connect to the SQLite database
     conn = sqlite3.connect('app_api_record.db')
