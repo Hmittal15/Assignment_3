@@ -66,7 +66,7 @@ def mapping(my_token):
             stf.st_folium(satellite_map, width=700, height=460)
             st.text("Click on marker to view city name!")
 
-        requests.post(BASE_URL + f'/check-users-api-record?url="/mapping-stations"&response="http"&username={st.session_state.username}')
+        requests.post(BASE_URL + f'/update-users-api-record?url="/mapping-stations"&response="http"&username={st.session_state.username}')
 
     else:
         st.text("User limit reached! Please try later.")

@@ -31,6 +31,7 @@ nexrad_bucket = 'noaa-nexrad-level2'
 @app.post("/token", status_code=200, tags=["Authenticate"])
 async def login_for_access_token(request: OAuth2PasswordRequestForm = Depends()):
     all_data=basic_func.get_users_data()
+    my_dict={}
     for i in range(len(all_data)):
         if (all_data[i]['username']==request.username):
             my_dict=all_data[i]
@@ -431,7 +432,7 @@ async def fetch_goes(file_prefix: str, year: str, day: str, hour: str,
         return {"file_list" : ['Please enter a valid station name']}
 
     # Lists the files present in the goes18 bucket for the selected year, day and hour
-    file_list = basic_func.list_filenames_goes(file_prefix, year, day, hour)
+    file_list = basic_func.list_filenames_goes_cli(file_prefix, year, day, hour)
 
     return {"file_list" : file_list}
 
@@ -478,7 +479,6 @@ async def check_user_exists(username: str) -> dict:
 @app.post("/check-users-api-record", tags=["CLI"])
 async def check_users_api_record(username: str) -> dict:
 
-    print("hola"+username)
     status = basic_func.check_users_api_record(username)
 
     return {"user" : status}

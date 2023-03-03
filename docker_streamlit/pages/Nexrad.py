@@ -107,15 +107,13 @@ def nexrad(my_token):
             # Display the url for the selected file
             st.write('Download Link : ', file_url)
 
-            st.write(file_url_response)
-
             # Make a request to the endpoint to fetch the url for the selected file from the Nexrad bucket for validation
             validation_url_response = requests.post(BASE_URL + f'/validate-url-nexrad?name={selected_file}', headers=headers).json()
             validation_url = validation_url_response["url"]
             
             st.write("NOAA bucket path for verfication : ", validation_url)
 
-            requests.post(BASE_URL + f'/check-users-api-record?url="/fetch-url-nexrad"&response={file_url}&username={st.session_state.username}')
+            requests.post(BASE_URL + f'/update-users-api-record?url="/fetch-url-nexrad"&response={file_url}&username={st.session_state.username}')
 
         else:
             st.text("User limit reached! Please try later.")
@@ -149,7 +147,7 @@ def nexrad(my_token):
                 # Display the url for the selected file
                 st.write('Download Link : ', file_url)
 
-                requests.post(BASE_URL + f'/check-users-api-record?url="/fetch-url-nexrad-from-name"&response={file_url}&username={st.session_state.username}')
+                requests.post(BASE_URL + f'/update-users-api-record?url="/fetch-url-nexrad-from-name"&response={file_url}&username={st.session_state.username}')
 
             except Exception as error:
                 st.error(f"Error: {error}")

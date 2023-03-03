@@ -18,7 +18,7 @@ username = st.text_input('Username')
 email = st.text_input('Email')
 fullname = st.text_input('Full Name')
 password = st.text_input('Password', type='password')
-plan = st.selectbox('Plan Type', ['Free', 'Gold', 'Platinum'])
+plan = st.selectbox('Plan Type', ['free', 'gold', 'platinum'])
 
 
 # Handle form submission
