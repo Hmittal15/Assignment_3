@@ -20,16 +20,10 @@ This project builds up on the Assignment-1 deliverables in which we built a data
 * <code>architecture.py</code> : This script is used to generate the architecture diagram for our application by using the 'diagrams' python module.
 
 ### Documentation for detailed explanation:
-https://codelabs-preview.appspot.com/?file_id=1QoOS-hG-6P2K4d-iLgIyLbFDi6EW6gLxXD5YU-UdKAM#8
+https://codelabs-preview.appspot.com/?file_id=1Dc2Q-O9I7tOrnNHDm9cSBd2RQXYSN5jXa8LZjqnJLgw#9
 
 ### Application public link:
 http://34.74.233.133:8000
-
-### Code review test report:
-https://damg-test.s3.amazonaws.com/Testing+/Code+Review+of+Assignment+1+%E2%80%93+Team+8++(1).docx
-
-### End user test report:
-https://damg-test.s3.amazonaws.com/Testing+/Enduser+testing+-+Team+11.xlsx
 
 ### Attestation:
 WE ATTEST THAT WE HAVEN’T USED ANY OTHER STUDENTS’ WORK IN OUR ASSIGNMENT AND ABIDE BY THE POLICIES LISTED IN THE STUDENT HANDBOOK
