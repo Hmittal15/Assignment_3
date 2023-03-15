@@ -38,7 +38,7 @@ else:
                                 'goes_name', 'nex_map', 'nex_cli', 'goes_cli', 'download_cli', 'success', 'failure'])
      
         api_df = pd.concat([app_api_df, user_api_df])
-        # st.dataframe(api_df)
+        st.dataframe(api_df)
 
 
 
@@ -64,7 +64,7 @@ else:
         no_of_calls['no_of_calls'] = yesterday_data['success'] + yesterday_data['failure']
         # Group the data by username and sum the number of API calls
         user_calls = no_of_calls.groupby("username")['no_of_calls'].sum()
-       
+
 
         # Convert the timestamp column to datetime
         api_df["first_call"] = pd.to_datetime(api_df["first_call"])
@@ -102,34 +102,20 @@ else:
 
 
         # col1, col2, col3 = st.columns(3)
-        # col1.metric("Total API Calls from Yesterday", user_calls, "")
-        # col2.metric("Total API Calls from Today", user_calls_today,"")
-        # col3.metric("Total API Calls from Last Week", user_calls_last_week, "")
-
-        st.write("Total API Calls from Yesterday :")
-        st.write(user_calls)
-        st.write("")
-
-        st.write("Total API Calls from Today :")
-        st.write(user_calls_today)
-        st.write("")
+        st.write("Total API Calls from Yesterday", user_calls)
+        st.write("Total API Calls from Today", user_calls_today)
+        st.write("Total API Calls from Last Week", user_calls_last_week)
 
         st.write("Total API Calls from Last Week :")
         st.write(user_calls_last_week)
         st.header("")
 
-
-
-        st.header("Total Number of Success and Failure API Calls")
-
         # Group the data by username and calculate the number of success and failure API calls
-        suc_fail_data = api_df[["success", "failure"]].sum()
+        suc_fail_data = api_df[api_df['username'] == username]
+        suc_fail_data = suc_fail_data[["success", "failure"]].sum()
 
         st.bar_chart(data=suc_fail_data)
-        st.header("")
-
-        st.header("Total Number of API Calls based on Endpoints")
-
+        
 
         endpoint_data = api_df[api_df['username'] == username]
         endpoint_data = endpoint_data[["nex_filter", "nex_name", "goes_filter", "goes_name", "nex_map", "nex_cli", "goes_cli", "download_cli"]]
@@ -156,7 +142,7 @@ else:
       
 
         api_df = pd.concat([app_api_df, user_api_df])
-        # st.dataframe(api_df)
+        st.dataframe(api_df)
 
 
 
@@ -166,6 +152,8 @@ else:
 
         st.header('API METRICS')
 
+        last_week_data = api_df[api_df["first_call"].dt.date >= last_week_start]
+        last_week_data = last_week_data[last_week_data["first_call"].dt.date <= last_week_end]
 
         api_df["first_call"] = pd.to_datetime(api_df["first_call"])
 
@@ -180,6 +168,9 @@ else:
         no_of_calls['no_of_calls'] = yesterday_data['success'] + yesterday_data['failure']
         # Group the data by username and sum the number of API calls
         user_calls = no_of_calls.groupby("username")['no_of_calls'].sum()
+
+        # Display the data using the metrics widget
+        st.write(user_calls)
 
 
         # Convert the timestamp column to datetime
@@ -197,6 +188,8 @@ else:
         # Group the data by username and sum the number of API calls
         user_calls_today = no_of_calls_today.groupby("username")['no_of_calls'].sum()
 
+        # Display the data using the metrics widget
+        st.write(user_calls_today)
 
 
         # Get the date range for last week
@@ -213,40 +206,15 @@ else:
         # Group the data by username and sum the number of API calls
         user_calls_last_week = no_of_calls_last_week.groupby("username")['no_of_calls'].sum()
 
-
-        # col1, col2, col3 = st.columns(3)
-        # col1.metric("Total API Calls from Yesterday", user_calls, "")
-        # col2.metric("Total API Calls from Today", user_calls_today,"")
-        # col3.metric("Total API Calls from Last Week", user_calls_last_week, "")
-
-        st.write("Total API Calls from Yesterday :")
-        st.write(user_calls)
-        st.write("")
-
-        st.write("Total API Calls from Today :")
-        st.write(user_calls_today)
-        st.write("")
-
-        st.write("Total API Calls from Last Week :")
+        # Display the data using the metrics widget
         st.write(user_calls_last_week)
-        st.header("")
-
-
-
-
-        st.header("Total Number of Success and Failure API Calls")
-
 
         # Group the data by username and calculate the number of success and failure API calls
         suc_fail_data = api_df[["success", "failure"]].sum()
 
         st.bar_chart(data=suc_fail_data)
 
-        st.header("")
-
-        st.header("Total Number of API Calls based on Endpoints")
-
-
+        
 
         endpoint_data = api_df[["nex_filter", "nex_name", "goes_filter", "goes_name", "nex_map", "nex_cli", "goes_cli", "download_cli"]]
         # st.dataframe(endpoint_data)
