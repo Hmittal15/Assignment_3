@@ -4,10 +4,12 @@ import pandas as pd
 import sqlite3
 import requests
 import json
+import numpy as np
+
 import datetime
 # import Login
 
-st.write(st.session_state.access_token)
+
 if 'access_token' not in st.session_state:
     st.session_state.access_token = ''
 
@@ -16,251 +18,236 @@ if 'username' not in st.session_state:
 
 username = st.session_state.username
 # print(username)
+if "access_token" not in st.session_state or st.session_state['access_token']=='':
+    st.title("Please sign-in to access this feature!")
+else:
+    if(username!='admin'):
+      
 
 
-# # Convert the timestamp column to a datetime format and set it as the index
-# df['first_call'] = pd.to_datetime(df['first_call'])
-# df.set_index('first_call', inplace=True)
 
-# # Resample the data by user and day to get the count of requests by each user on each day
-# df_count = df.groupby([pd.Grouper(freq='D'), 'username']).size().unstack(fill_value=0)
+        response = requests.post('http://localhost:8090/app-api-record')
+        csv_string = response.content.decode('utf-8')
+        app_api_record_df = pd.read_csv(io.StringIO(csv_string))
 
-# # Create a line chart using plotly
-# fig = px.line(df_count, x=df_count.index, y=df_count.columns)
-# st.plotly_chart(fig)
+        response = requests.post('http://localhost:8090/user-api-record')
+        csv_string = response.content.decode('utf-8')
+        user_api_df = pd.read_csv(io.StringIO(csv_string))
+        
+        app_api_df = pd.DataFrame(columns=['username', 'first_call', 'plan', 'max_count', 'total_count', 'nex_filter', 'nex_name', 'goes_filter',
+                                'goes_name', 'nex_map', 'nex_cli', 'goes_cli', 'download_cli', 'success', 'failure'])
+     
+        api_df = pd.concat([app_api_df, user_api_df])
+        # st.dataframe(api_df)
 
-# # Close the database connection
-# conn.close()
 
 
+        st.title('Dashboard')
 
-response = requests.post('http://localhost:8090/app-api-record')
-csv_string = response.content.decode('utf-8')
-app_api_record_df = pd.read_csv(io.StringIO(csv_string))
 
-response = requests.post('http://localhost:8090/user-api-record')
-csv_string = response.content.decode('utf-8')
-user_api_df = pd.read_csv(io.StringIO(csv_string))
-# st.write(df)
-# response_text = response.json
-# json_str=''
-# for line in response_json.iter_lines():
-#     if line:
-#         json_data = json.loads(line)
-#         json_str = json.dumps(json_data)
-#         print(json_str)
-# data = json.loads(json_str)
-# json = response.json()
-# print(json)
-app_api_df = pd.DataFrame(columns=['username', 'first_call', 'plan', 'max_count', 'total_count', 'nex_filter', 'nex_name', 'goes_filter',
-                           'goes_name', 'nex_map', 'nex_cli', 'goes_cli', 'download_cli', 'success', 'failure'])
-# for line in response.iter_lines():
-#     if line:
-#         # data = eval(line.decode('utf-8'))
-#         data = pd.read_json(line.decode('utf-8'), typ='series')
-#         app_api_df = app_api_df.append(data, ignore_index=True)
-# st.write(app_api_df)
-# csv_string = response.content.decode('utf-8')
-# app_api_df = pd.read_csv(io.StringIO(csv_string))
-# print(app_api_df.head())
 
+        st.header('API METRICS')
 
-# response = requests.get('http://localhost:8090/user-api-record')
-# csv_string = response.content.decode('utf-8')
-# user_api_df = pd.read_csv(io.StringIO(csv_string))
 
-api_df = pd.concat([app_api_df, user_api_df])
-st.dataframe(api_df)
+     
+        api_df["first_call"] = pd.to_datetime(api_df["first_call"])
 
+        # Get the date for the day before
+        yesterday = datetime.datetime.now() - datetime.timedelta(days=1)
+        yesterday = yesterday.date()
 
+        # Filter the DataFrame to only include data from the day before
+        yesterday_data = api_df[api_df["first_call"].dt.date == yesterday]
+        yesterday_data = yesterday_data[yesterday_data['username'] == username]
+        no_of_calls = pd.DataFrame(columns= ['username', 'no_of_calls'])
+        no_of_calls['username'] = yesterday_data['username']
+        no_of_calls['no_of_calls'] = yesterday_data['success'] + yesterday_data['failure']
+        # Group the data by username and sum the number of API calls
+        user_calls = no_of_calls.groupby("username")['no_of_calls'].sum()
+       
 
-st.title('Dashboard')
+        # Convert the timestamp column to datetime
+        api_df["first_call"] = pd.to_datetime(api_df["first_call"])
 
+        # Get the date for the day before
+        today = datetime.datetime.now()
+        today = today.date()
 
+        # Filter the DataFrame to only include data from the day before
+        today_data = api_df[api_df["first_call"].dt.date == today]
+        today_data = today_data[today_data['username'] == username]
+        no_of_calls_today = pd.DataFrame(columns= ['username', 'no_of_calls'])
+        no_of_calls_today['username'] = today_data['username']
+        no_of_calls_today['no_of_calls'] = today_data['success'] + today_data['failure']
+        # Group the data by username and sum the number of API calls
+        user_calls_today = no_of_calls_today.groupby("username")['no_of_calls'].sum()
 
-st.header('API METRICS')
+       
+        # Get the date range for last week
+        today = datetime.datetime.now().date()
+        last_week_start = today - datetime.timedelta(days=today.weekday() + 7)
+        last_week_end = today - datetime.timedelta(days=today.weekday() + 1)
 
+        last_week_data = api_df[api_df["first_call"].dt.date >= last_week_start]
+        last_week_data = last_week_data[last_week_data["first_call"].dt.date <= last_week_end]
+        last_week_data = last_week_data[last_week_data['username'] == username]
 
-# col1, col2, col3 = st.columns(3)
+        no_of_calls_last_week = pd.DataFrame(columns= ['username', 'no_of_calls'])
+        no_of_calls_last_week['username'] = last_week_data['username']
+        no_of_calls_last_week['no_of_calls'] = last_week_data['success'] + last_week_data['failure']
+        # Group the data by username and sum the number of API calls
+        user_calls_last_week = no_of_calls_last_week.groupby("username")['no_of_calls'].sum()
 
-# # filter out rows for username 'john'
-# filtered_df = api_df.loc[api_df['username'] == username]
-# print(filtered_df)
+       
 
 
-# # assume your data is stored in a DataFrame called 'df'
-# # set the username and timestamp columns as the index
-# # df = df.set_index(['username', 'timestamp'])
+        # col1, col2, col3 = st.columns(3)
+        # col1.metric("Total API Calls from Yesterday", user_calls, "")
+        # col2.metric("Total API Calls from Today", user_calls_today,"")
+        # col3.metric("Total API Calls from Last Week", user_calls_last_week, "")
 
-# Convert the timestamp column to datetime
-api_df["first_call"] = pd.to_datetime(api_df["first_call"])
+        st.write("Total API Calls from Yesterday :")
+        st.write(user_calls)
+        st.write("")
 
-# Get the date for the day before
-yesterday = datetime.datetime.now() - datetime.timedelta(days=1)
-yesterday = yesterday.date()
+        st.write("Total API Calls from Today :")
+        st.write(user_calls_today)
+        st.write("")
 
-# Filter the DataFrame to only include data from the day before
-yesterday_data = api_df[api_df["first_call"].dt.date == yesterday]
-yesterday_data = yesterday_data[yesterday_data['username'] == username]
-no_of_calls = pd.DataFrame(columns= ['username', 'no_of_calls'])
-no_of_calls['username'] = yesterday_data['username']
-no_of_calls['no_of_calls'] = yesterday_data['success'] + yesterday_data['failure']
-# Group the data by username and sum the number of API calls
-user_calls = no_of_calls.groupby("username")['no_of_calls'].sum()
+        st.write("Total API Calls from Last Week :")
+        st.write(user_calls_last_week)
+        st.header("")
 
-# Display the data using the metrics widget
-st.write(user_calls)
 
 
-# Convert the timestamp column to datetime
-api_df["first_call"] = pd.to_datetime(api_df["first_call"])
+        st.header("Total Number of Success and Failure API Calls")
 
-# Get the date for the day before
-today = datetime.datetime.now()
-today = today.date()
+        # Group the data by username and calculate the number of success and failure API calls
+        suc_fail_data = api_df[["success", "failure"]].sum()
 
-# Filter the DataFrame to only include data from the day before
-today_data = api_df[api_df["first_call"].dt.date == today]
-today_data = today_data[today_data['username'] == username]
-no_of_calls_today = pd.DataFrame(columns= ['username', 'no_of_calls'])
-no_of_calls_today['username'] = today_data['username']
-no_of_calls_today['no_of_calls'] = today_data['success'] + today_data['failure']
-# Group the data by username and sum the number of API calls
-user_calls_today = no_of_calls_today.groupby("username")['no_of_calls'].sum()
+        st.bar_chart(data=suc_fail_data)
+        st.header("")
 
-# Display the data using the metrics widget
-st.write(user_calls_today)
+        st.header("Total Number of API Calls based on Endpoints")
 
 
-# Get the date range for last week
-today = datetime.datetime.now().date()
-last_week_start = today - datetime.timedelta(days=today.weekday() + 7)
-last_week_end = today - datetime.timedelta(days=today.weekday() + 1)
+        endpoint_data = api_df[api_df['username'] == username]
+        endpoint_data = endpoint_data[["nex_filter", "nex_name", "goes_filter", "goes_name", "nex_map", "nex_cli", "goes_cli", "download_cli"]]
+        # st.dataframe(endpoint_data)
+        st.bar_chart(data=endpoint_data)
 
-last_week_data = api_df[api_df["first_call"].dt.date >= last_week_start]
-last_week_data = last_week_data[last_week_data["first_call"].dt.date <= last_week_end]
-last_week_data = last_week_data[last_week_data['username'] == username]
 
-no_of_calls_last_week = pd.DataFrame(columns= ['username', 'no_of_calls'])
-no_of_calls_last_week['username'] = last_week_data['username']
-no_of_calls_last_week['no_of_calls'] = last_week_data['success'] + last_week_data['failure']
-# Group the data by username and sum the number of API calls
-user_calls_last_week = no_of_calls_last_week.groupby("username")['no_of_calls'].sum()
 
-# Display the data using the metrics widget
-st.write(user_calls_last_week)
 
 
+    else:
+        response = requests.post('http://localhost:8090/app-api-record')
+        csv_string = response.content.decode('utf-8')
+        app_api_record_df = pd.read_csv(io.StringIO(csv_string))
 
+        response = requests.post('http://localhost:8090/user-api-record')
+        csv_string = response.content.decode('utf-8')
+        user_api_df = pd.read_csv(io.StringIO(csv_string))
+        
+        app_api_df = pd.DataFrame(columns=['username', 'first_call', 'plan', 'max_count', 'total_count', 'nex_filter', 'nex_name', 'goes_filter',
+                                'goes_name', 'nex_map', 'nex_cli', 'goes_cli', 'download_cli', 'success', 'failure'])
+       
 
+      
 
+        api_df = pd.concat([app_api_df, user_api_df])
+        # st.dataframe(api_df)
 
 
-# end_time = datetime.now()
-# start_time = end_time - timedelta(hours=24)
 
-# # filter the DataFrame to show only the selected user and timestamp range
-# user_calls = df.loc[user, start_time:end_time]
+        st.title('Dashboard')
 
-# # group the filtered data by the user and sum the number of API calls
-# total_calls = user_calls.groupby('username')['api_calls'].sum()
 
-# # print the total calls made by the user in the last 24 hours
-# print(total_calls[user])
 
+        st.header('API METRICS')
 
-# ------------------------
 
-# col1.metric("API Calls Yesterday", "70 °F", "1.2 °F")
+        api_df["first_call"] = pd.to_datetime(api_df["first_call"])
 
-# # select count(success) from users.db where username = "" and time = 
+        # Get the date for the day before
+        yesterday = datetime.datetime.now() - datetime.timedelta(days=1)
+        yesterday = yesterday.date()
 
+        # Filter the DataFrame to only include data from the day before
+        yesterday_data = api_df[api_df["first_call"].dt.date == yesterday]
+        no_of_calls = pd.DataFrame(columns= ['username', 'no_of_calls'])
+        no_of_calls['username'] = yesterday_data['username']
+        no_of_calls['no_of_calls'] = yesterday_data['success'] + yesterday_data['failure']
+        # Group the data by username and sum the number of API calls
+        user_calls = no_of_calls.groupby("username")['no_of_calls'].sum()
 
 
+        # Convert the timestamp column to datetime
+        api_df["first_call"] = pd.to_datetime(api_df["first_call"])
 
-# --------------------
+        # Get the date for the day before
+        today = datetime.datetime.now()
+        today = today.date()
 
+        # Filter the DataFrame to only include data from the day before
+        today_data = api_df[api_df["first_call"].dt.date == today]
+        no_of_calls_today = pd.DataFrame(columns= ['username', 'no_of_calls'])
+        no_of_calls_today['username'] = today_data['username']
+        no_of_calls_today['no_of_calls'] = today_data['success'] + today_data['failure']
+        # Group the data by username and sum the number of API calls
+        user_calls_today = no_of_calls_today.groupby("username")['no_of_calls'].sum()
 
-# import pandas as pd
-# from datetime import datetime
 
-# # assume your data is stored in a DataFrame called 'df'
-# # set the timestamp column as the index
-# df = df.set_index('timestamp')
 
-# # select the user and date you're interested in
-# user = 'your_username'
-# date = '2023-03-03' # yyyy-mm-dd format
+        # Get the date range for last week
+        today = datetime.datetime.now().date()
+        last_week_start = today - datetime.timedelta(days=today.weekday() + 7)
+        last_week_end = today - datetime.timedelta(days=today.weekday() + 1)
 
-# # filter the DataFrame to show only the selected user and date
-# user_calls = df.loc[(df['username'] == user) & (df.index.date == datetime.strptime(date, '%Y-%m-%d').date())]
+        last_week_data = api_df[api_df["first_call"].dt.date >= last_week_start]
+        last_week_data = last_week_data[last_week_data["first_call"].dt.date <= last_week_end]
 
-# # sum the number of API calls made by the user on the selected date
-# total_calls = user_calls['api_calls'].sum()
+        no_of_calls_last_week = pd.DataFrame(columns= ['username', 'no_of_calls'])
+        no_of_calls_last_week['username'] = last_week_data['username']
+        no_of_calls_last_week['no_of_calls'] = last_week_data['success'] + last_week_data['failure']
+        # Group the data by username and sum the number of API calls
+        user_calls_last_week = no_of_calls_last_week.groupby("username")['no_of_calls'].sum()
 
-# # print the total calls made by the user on the selected date
-# print(total_calls)
 
+        # col1, col2, col3 = st.columns(3)
+        # col1.metric("Total API Calls from Yesterday", user_calls, "")
+        # col2.metric("Total API Calls from Today", user_calls_today,"")
+        # col3.metric("Total API Calls from Last Week", user_calls_last_week, "")
 
+        st.write("Total API Calls from Yesterday :")
+        st.write(user_calls)
+        st.write("")
 
+        st.write("Total API Calls from Today :")
+        st.write(user_calls_today)
+        st.write("")
 
+        st.write("Total API Calls from Last Week :")
+        st.write(user_calls_last_week)
+        st.header("")
 
 
-# col2.metric("API Calls Today", "9 mph", "-8%")
-# # select count(success) from users.db where username = "" and time = 
 
-# col3.metric("Average API Calls This Week", "86%", "4%")
-# # select avg(success) from users.db where username = "" and time = one week
 
-# st.header(' ')
+        st.header("Total Number of Success and Failure API Calls")
 
 
+        # Group the data by username and calculate the number of success and failure API calls
+        suc_fail_data = api_df[["success", "failure"]].sum()
 
+        st.bar_chart(data=suc_fail_data)
 
+        st.header("")
 
-# st.header('Request Count By Each User Against Time')
+        st.header("Total Number of API Calls based on Endpoints")
 
 
-# # req_count_vs_time = pd.DataFrame(
-# #     np.random.randn(20, 3),
-# #     columns=['a', 'b', 'c'])
 
-# # st.line_chart(req_count_vs_time)
-
-
-
-# # st.header(' ')
-
-
-
-
-
-# st.header('Count of Success and Failed Request Calls')
-
-
-# # api_df
-# #edit this
-
-# # suc_fail = pd.DataFrame(
-# #     api_df[]
-# #     columns=["Success", "Failed"])
-
-# # st.bar_chart(suc_fail)
-
-# # select count(success) from users.db where username = "" 
-# # select count(failure) from users.db where username = "" 
-# # st.header(' ')
-
-
-
-
-
-# # st.header('Total Calls Per Endpoint')
-
-
-
-# # endpoint_usage = pd.DataFrame(
-# #     np.random.randn(20, 3),
-# #     columns=["a", "b", "c"])
-
-# # st.bar_chart(endpoint_usage)
+        endpoint_data = api_df[["nex_filter", "nex_name", "goes_filter", "goes_name", "nex_map", "nex_cli", "goes_cli", "download_cli"]]
+        # st.dataframe(endpoint_data)
+        st.bar_chart(data=endpoint_data)

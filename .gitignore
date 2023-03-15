@@ -138,3 +138,6 @@ docker_streamlit/.env
 .env
 fastapi/table.py
 fastapi/createdb.py
+docker_streamlit/pages/Dashboard.py
+users_api_record.db
+pip
