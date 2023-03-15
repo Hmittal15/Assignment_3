@@ -20,7 +20,7 @@ This project builds up on the Assignment-1 deliverables in which we built a data
 * <code>architecture.py</code> : This script is used to generate the architecture diagram for our application by using the 'diagrams' python module.
 
 ### Documentation for detailed explanation:
-https://codelabs-preview.appspot.com/?file_id=1Dc2Q-O9I7tOrnNHDm9cSBd2RQXYSN5jXa8LZjqnJLgw#9
+https://codelabs-preview.appspot.com/?file_id=1EgKr6mdCF6xvso3-5t60NeksYkvUTFszRz97CEUFRC8#10
 
 ### Application public link:
 http://34.74.233.133:8000
